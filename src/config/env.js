@@ -4,9 +4,9 @@ dotenv.config()
 
 const requiredVars = [
     'PORT',
-    'MONGO_URI',
     'NODE_ENV',
-    'CORS_ORIGIN'
+    'CORS_ORIGIN',
+    'DATABASE_URL'  
 ]
 
 const misising = requiredVars.filter(key => !process.env[key])
@@ -17,7 +17,7 @@ if (misising.length > 0) {
 
 export const env = {
     PORT: process.env.PORT,
-    MONGO_URI: process.env.MONGO_URI,
+    DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
     CORS_ORIGIN: process.env.CORS_ORIGIN,
     TZ: process.env.TZ || 'America/El_Salvador'

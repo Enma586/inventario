@@ -2,9 +2,9 @@
   "name": "inventario",
   "version": "1.0.0",
   "type": "module",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon index.js"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",

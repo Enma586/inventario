@@ -46,6 +46,8 @@ model Proveedor {
   contacto String?
   productos Producto[]
   compras   Compra[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Sucursal {
@@ -56,6 +58,8 @@ model Sucursal {
   stocks    Stock[]
   ventas    Venta[]
   compras   Compra[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Producto {
@@ -74,6 +78,8 @@ model Producto {
   stocks           Stock[]
   ventas_detalles  VentaDetalle[]
   compras_detalles CompraDetalle[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Stock {
@@ -85,6 +91,8 @@ model Stock {
   sucursal Sucursal @relation(fields: [id_sucursal], references: [id])
 
   @@id([id_producto, id_sucursal])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Venta {
@@ -100,6 +108,8 @@ model Venta {
 
   sucursal Sucursal       @relation(fields: [id_sucursal], references: [id])
   items    VentaDetalle[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model VentaDetalle {
@@ -113,6 +123,8 @@ model VentaDetalle {
 
   venta    Venta    @relation(fields: [id_venta], references: [id], onDelete: Cascade)
   producto Producto @relation(fields: [id_producto], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Compra {
@@ -125,6 +137,8 @@ model Compra {
 
   proveedor Proveedor       @relation(fields: [id_proveedor], references: [id])
   sucursal  Sucursal        @relation(fields: [id_sucursal], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
   detalles  CompraDetalle[]
 }
 
@@ -137,4 +151,6 @@ model CompraDetalle {
 
   compra   Compra   @relation(fields: [id_compra], references: [id], onDelete: Cascade)
   producto Producto @relation(fields: [id_producto], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }

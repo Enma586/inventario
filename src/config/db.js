@@ -1,12 +1,11 @@
-import mongoose from 'mongoose' 
-import { env } from './env.js'
+import prisma from '../models/index.js';
 
 export const connectDB = async () => {
-    try {
-        await mongoose.connect(env.MONGO_URI)
-        console.log('Connected to MongoDB')
-    } catch (error) {
-        console.error('Error connecting to MongoDB:', error)
-        process.exit(1)
-    }
-}
+  try {
+    await prisma.$connect();
+    console.log('Conexión exitosa a la base de datos');
+  } catch (error) {
+    console.error('Error fatal al conectar a la base de datos:', error);
+    process.exit(1); // Detiene el proceso si no hay BD
+  }
+};
