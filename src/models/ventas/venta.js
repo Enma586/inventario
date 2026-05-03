@@ -1,6 +1,6 @@
-import mongoose from 'mongoose'
-import { METHODS_PAYMENT, STATUS_ORDER } from "../../constants/index";
+import mongoose from "mongoose";
 
+import { METHODS_PAYMENT, STATUS_ORDER } from "../../constants/index.js";
 
 const ventaSchema = new mongoose.Schema(
   {
@@ -8,6 +8,12 @@ const ventaSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+    },
+    // Recuperamos la sucursal
+    id_sucursal: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Sucursal",
+      required: true,
     },
     fecha: {
       type: Date,
@@ -70,9 +76,9 @@ const ventaSchema = new mongoose.Schema(
       enum: STATUS_ORDER,
       default: "Pendiente",
       required: true,
-    }
+    },
   },
   { timestamps: true },
 );
 
-module.exports = mongoose.model("Venta", ventaSchema);
+export default mongoose.model("Venta", ventaSchema);
