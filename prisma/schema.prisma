@@ -1,0 +1,140 @@
+// Configuración de conexión
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ==========================================
+// ENUMS (Tus constantes de sistema)
+// ==========================================
+
+enum EstadoProducto {
+  DISPONIBLE
+  DESCONTINUADO
+  AGOTADO
+}
+
+enum EstadoOrden {
+  PENDIENTE
+  RECIBIDO
+  CANCELADO
+}
+
+enum MetodoPago {
+  EFECTIVO
+  TARJETA_CREDITO
+  TRANSFERENCIA_BANCARIA
+}
+
+// ==========================================
+// MODELOS DE NEGOCIO
+// ==========================================
+
+model Categoria {
+  id          String     @id @default(uuid())
+  nombre      String     @unique
+  descripcion String?
+  productos   Producto[]
+}
+
+model Proveedor {
+  id       String     @id @default(uuid())
+  nombre   String
+  contacto String?
+  productos Producto[]
+  compras   Compra[]
+}
+
+model Sucursal {
+  id        String   @id @default(uuid())
+  nombre    String   @unique
+  direccion String
+  activa    Boolean  @default(true)
+  stocks    Stock[]
+  ventas    Venta[]
+  compras   Compra[]
+}
+
+model Producto {
+  id           String         @id @default(uuid())
+  sku          String         @unique
+  nombre       String
+  id_categoria String
+  id_proveedor String
+  estado       EstadoProducto @default(DISPONIBLE) // Uso del Enum
+  costo_compra Int
+  precio_venta Int
+
+  categoria Categoria @relation(fields: [id_categoria], references: [id])
+  proveedor Proveedor @relation(fields: [id_proveedor], references: [id])
+
+  stocks           Stock[]
+  ventas_detalles  VentaDetalle[]
+  compras_detalles CompraDetalle[]
+}
+
+model Stock {
+  id_producto String
+  id_sucursal String
+  cantidad    Int      @default(0)
+
+  producto Producto @relation(fields: [id_producto], references: [id])
+  sucursal Sucursal @relation(fields: [id_sucursal], references: [id])
+
+  @@id([id_producto, id_sucursal])
+}
+
+model Venta {
+  id             String      @id @default(uuid())
+  numero_factura String      @unique
+  id_sucursal    String
+  cliente_nombre String
+  cliente_nit    String
+  fecha          DateTime    @default(now())
+  total_pagado   Int
+  metodo_pago    MetodoPago  // Uso del Enum
+  estado         EstadoOrden @default(PENDIENTE) // Uso del Enum
+
+  sucursal Sucursal       @relation(fields: [id_sucursal], references: [id])
+  items    VentaDetalle[]
+}
+
+model VentaDetalle {
+  id                    String @id @default(uuid())
+  id_venta              String
+  id_producto           String
+  nombre_snapshot       String
+  precio_unitario_venta Int
+  cantidad              Int
+  subtotal              Int
+
+  venta    Venta    @relation(fields: [id_venta], references: [id], onDelete: Cascade)
+  producto Producto @relation(fields: [id_producto], references: [id])
+}
+
+model Compra {
+  id             String      @id @default(uuid())
+  numero_orden   String      @unique
+  id_proveedor   String
+  id_sucursal    String
+  total_compra   Int
+  estado_entrega EstadoOrden @default(PENDIENTE) // Uso del Enum
+
+  proveedor Proveedor       @relation(fields: [id_proveedor], references: [id])
+  sucursal  Sucursal        @relation(fields: [id_sucursal], references: [id])
+  detalles  CompraDetalle[]
+}
+
+model CompraDetalle {
+  id             String @id @default(uuid())
+  id_compra      String
+  id_producto    String
+  cantidad       Int
+  costo_unitario Int
+
+  compra   Compra   @relation(fields: [id_compra], references: [id], onDelete: Cascade)
+  producto Producto @relation(fields: [id_producto], references: [id])
+}

@@ -1,21 +1,16 @@
-import {
-    Compra
-} from './compras/index'
+import { PrismaClient } from '@prisma/client';
+import pg from 'pg';
+import { PrismaPg } from '@prisma/adapter-pg';
 
-import {
-    Venta
-} from './ventas/index'
+// 1. Creas el pool de conexiones usando tu variable del .env
+const pool = new pg.Pool({ 
+  connectionString: process.env.DATABASE_URL 
+});
 
-import {
-    Producto,
-    Categoria,
-    Proveedor
-} from './productos/mercaderia/index'
+// 2. Creas el adaptador de PostgreSQL para Prisma
+const adapter = new PrismaPg(pool);
 
-export {
-    Compra,
-    Venta,
-    Producto,
-    Categoria,
-    Proveedor
-}
+// 3. Instancias el cliente inyectando el adaptador
+const prisma = new PrismaClient({ adapter });
+
+export default prisma;
