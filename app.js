@@ -3,7 +3,7 @@ import morgan from 'morgan'
 //import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import helmet from 'helmet'
-//import { errorHandler } from './src/middlewares/index.js'
+import { errorHandler } from './src/middlewares/index.js'
 //import routes from './src/routes/index.js'
 import { env } from './src/config/env.js'
 
@@ -22,6 +22,6 @@ app.use(morgan('dev'))
 
 //app.use('/api', routes)
 
-//app.use(errorHandler)
+app.use(errorHandler)
 
 export default app
