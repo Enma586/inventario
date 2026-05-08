@@ -17,8 +17,11 @@ const Empleado = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    telefono: { type: DataTypes.STRING },
-    direccion: { type: DataTypes.STRING },
+    dui: { 
+      type: DataTypes.STRING(10),
+      unique: { name: 'uq_empleado_dui', msg: 'Este DUI ya está registrado en el sistema.' },
+      allowNull: false, 
+    },
   },
   {
     tableName: 'empleados',
@@ -27,12 +30,13 @@ const Empleado = sequelize.define(
 );
 
 Empleado.associate = (models) => {
-  // Ahora Empleado TIENE un Usuario
+  // Se mantiene la relación con Usuario porque es necesaria para el acceso
   Empleado.hasOne(models.Usuario, {
     foreignKey: 'id_empleado',
     as: 'usuario',
   });
 
+  // Se mantiene para el registro de operaciones
   Empleado.hasMany(models.Venta, {
     foreignKey: 'id_empleado',
     as: 'ventas',

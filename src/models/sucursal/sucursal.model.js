@@ -14,6 +14,15 @@ const Sucursal = sequelize.define(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
+    // Vinculamos la sucursal a la nueva estructura administrativa
+    id_distrito: {
+      type: DataTypes.UUID,
+      allowNull: false, // Una sucursal física debe tener una ubicación legal
+      references: {
+        model: 'distritos',
+        key: 'id',
+      },
+    },
     nombre: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -42,6 +51,13 @@ const Sucursal = sequelize.define(
 );
 
 Sucursal.associate = (models) => {
+  // Relación con la ubicación geográfica
+  Sucursal.belongsTo(models.Distrito, {
+    foreignKey: 'id_distrito',
+    as: 'distrito',
+  });
+
+  // Relaciones existentes de tu negocio
   Sucursal.hasMany(models.Stock, {
     foreignKey: 'id_sucursal',
     as: 'stocks',
