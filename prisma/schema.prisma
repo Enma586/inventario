@@ -1,4 +1,6 @@
-// Configuración de conexión
+// ==========================================
+// CONFIGURACIÓN BASE
+// ==========================================
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,7 +10,7 @@ datasource db {
 }
 
 // ==========================================
-// ENUMS (Tus constantes de sistema)
+// ENUMS (Listas de valores permitidos)
 // ==========================================
 
 enum EstadoProducto {
@@ -30,58 +32,88 @@ enum MetodoPago {
 }
 
 // ==========================================
-// MODELOS DE NEGOCIO
+// MODELOS DE CATÁLOGO Y USUARIOS
 // ==========================================
 
+// Tabla de Usuarios del sistema (Cajeros, Administradores, etc.)
+model User {
+  id             String   @id @default(uuid())
+  nombre_usuario String   @unique
+  email          String   @unique
+  password       String   // Contraseña encriptada (Hash)
+  activo         Boolean  @default(true)
+  
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+// Categorías de productos (Opcional para un producto)
 model Categoria {
   id          String     @id @default(uuid())
   nombre      String     @unique
-  descripcion String?
-  productos   Producto[]
+  descripcion String?    // Campo opcional
+  
+  productos   Producto[] // Relación: Una categoría tiene muchos productos
 }
 
+// Proveedores de mercancía (Opcional para un producto)
 model Proveedor {
-  id       String     @id @default(uuid())
-  nombre   String
-  contacto String?
-  productos Producto[]
+  id        String   @id @default(uuid())
+  nombre    String
+  contacto  String?
+  
+  productos Producto[] 
   compras   Compra[]
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
+// Sucursales físicas o puntos de venta
 model Sucursal {
   id        String   @id @default(uuid())
   nombre    String   @unique
   direccion String
   activa    Boolean  @default(true)
+  
   stocks    Stock[]
   ventas    Venta[]
   compras   Compra[]
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
+// Catálogo principal de Productos
 model Producto {
   id           String         @id @default(uuid())
   sku          String         @unique
   nombre       String
-  id_categoria String
-  id_proveedor String
-  estado       EstadoProducto @default(DISPONIBLE) // Uso del Enum
-  costo_compra Int
+  
+  // Llaves foráneas (Opcionales gracias al "?")
+  id_categoria String?
+  id_proveedor String?
+  
+  estado       EstadoProducto @default(DISPONIBLE)
+  costo_compra Int            // Guardado en centavos es mejor práctica (ej. $10.50 = 1050)
   precio_venta Int
 
-  categoria Categoria @relation(fields: [id_categoria], references: [id])
-  proveedor Proveedor @relation(fields: [id_proveedor], references: [id])
+  // Relaciones
+  categoria Categoria? @relation(fields: [id_categoria], references: [id])
+  proveedor Proveedor? @relation(fields: [id_proveedor], references: [id])
 
   stocks           Stock[]
   ventas_detalles  VentaDetalle[]
   compras_detalles CompraDetalle[]
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
+// MODELOS DE INVENTARIO Y TRANSACCIONES
+
+
+// Control de existencias por sucursal (Tabla intermedia con datos)
 model Stock {
   id_producto String
   id_sucursal String
@@ -90,58 +122,86 @@ model Stock {
   producto Producto @relation(fields: [id_producto], references: [id])
   sucursal Sucursal @relation(fields: [id_sucursal], references: [id])
 
+  // Llave primaria compuesta: Un producto solo tiene un registro de stock por sucursal
   @@id([id_producto, id_sucursal])
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
+
+// MÓDULO DE VENTAS Y DTE (Facturación Electrónica)
+
+
+// Cabecera de la Venta / Factura
 model Venta {
   id             String      @id @default(uuid())
   numero_factura String      @unique
   id_sucursal    String
+  
+  // Datos del Cliente (Para el DTE)
   cliente_nombre String
   cliente_nit    String
+  cliente_email  String?     // Opcional, pero necesario si quieres enviar el DTE por correo
+  
   fecha          DateTime    @default(now())
   total_pagado   Int
-  metodo_pago    MetodoPago  // Uso del Enum
-  estado         EstadoOrden @default(PENDIENTE) // Uso del Enum
-
+  metodo_pago    MetodoPago  
+  estado         EstadoOrden @default(PENDIENTE) 
+  
+  // Campos de Facturación Electrónica (DTE El Salvador)
+  estado_dte        String   @default("PENDIENTE") // PENDIENTE, EN_PROCESO, APROBADO, RECHAZADO
+  codigo_generacion String?  @unique // UUID que exige Hacienda
+  sello_recepcion   String?  // Sello que devuelve Hacienda al aprobar
+  
   sucursal Sucursal       @relation(fields: [id_sucursal], references: [id])
-  items    VentaDetalle[]
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  items    VentaDetalle[] // Detalle de los productos vendidos
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
+// Detalle de los productos dentro de una venta
 model VentaDetalle {
   id                    String @id @default(uuid())
   id_venta              String
   id_producto           String
-  nombre_snapshot       String
+  
+  // Snapshot: Guarda el nombre por si el producto es editado/borrado en el futuro
+  nombre_snapshot       String 
   precio_unitario_venta Int
   cantidad              Int
   subtotal              Int
 
   venta    Venta    @relation(fields: [id_venta], references: [id], onDelete: Cascade)
   producto Producto @relation(fields: [id_producto], references: [id])
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
+
+// MÓDULO DE COMPRAS (Abastecimiento)
+
+
+// Cabecera de la orden de compra a proveedores
 model Compra {
   id             String      @id @default(uuid())
   numero_orden   String      @unique
   id_proveedor   String
   id_sucursal    String
   total_compra   Int
-  estado_entrega EstadoOrden @default(PENDIENTE) // Uso del Enum
+  estado_entrega EstadoOrden @default(PENDIENTE) 
 
   proveedor Proveedor       @relation(fields: [id_proveedor], references: [id])
   sucursal  Sucursal        @relation(fields: [id_sucursal], references: [id])
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
   detalles  CompraDetalle[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
+// Detalle de los productos ingresados en la compra
 model CompraDetalle {
   id             String @id @default(uuid())
   id_compra      String
@@ -149,8 +209,10 @@ model CompraDetalle {
   cantidad       Int
   costo_unitario Int
 
+  // onDelete: Cascade significa que si borras la Compra, se borran sus detalles
   compra   Compra   @relation(fields: [id_compra], references: [id], onDelete: Cascade)
   producto Producto @relation(fields: [id_producto], references: [id])
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
