@@ -1,6 +1,4 @@
-// ==========================================
-// CONFIGURACIÓN BASE
-// ==========================================
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,9 +7,7 @@ datasource db {
   provider = "postgresql"
 }
 
-// ==========================================
-// ENUMS (Listas de valores permitidos)
-// ==========================================
+
 
 enum EstadoProducto {
   DISPONIBLE
@@ -31,11 +27,11 @@ enum MetodoPago {
   TRANSFERENCIA_BANCARIA
 }
 
-// ==========================================
-// MODELOS DE CATÁLOGO Y USUARIOS
-// ==========================================
 
-// Tabla de Usuarios del sistema (Cajeros, Administradores, etc.)
+// MODELOS DE CATÁLOGO Y USUARIOS
+
+
+// Tabla de Usuarios del sistema 
 model User {
   id             String   @id @default(uuid())
   nombre_usuario String   @unique
@@ -56,7 +52,7 @@ model Categoria {
   productos   Producto[] // Relación: Una categoría tiene muchos productos
 }
 
-// Proveedores de mercancía (Opcional para un producto)
+// Proveedores (Opcional para un producto)
 model Proveedor {
   id        String   @id @default(uuid())
   nombre    String
@@ -69,7 +65,7 @@ model Proveedor {
   updatedAt DateTime @updatedAt
 }
 
-// Sucursales físicas o puntos de venta
+// Sucursales
 model Sucursal {
   id        String   @id @default(uuid())
   nombre    String   @unique
@@ -84,7 +80,7 @@ model Sucursal {
   updatedAt DateTime @updatedAt
 }
 
-// Catálogo principal de Productos
+// Productos
 model Producto {
   id           String         @id @default(uuid())
   sku          String         @unique

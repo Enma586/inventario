@@ -6,6 +6,6 @@ export const connectDB = async () => {
     console.log('Conexión exitosa a la base de datos');
   } catch (error) {
     console.error('Error fatal al conectar a la base de datos:', error);
-    process.exit(1); // Detiene el proceso si no hay BD
+    process.exit(1);
   }
 };
