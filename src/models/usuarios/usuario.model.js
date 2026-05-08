@@ -1,10 +1,3 @@
-/**
- * @file src/models/usuarios/usuario.model.js
- * @description Modelo Usuario — entidad de autenticación (login, credenciales).
- *              Hook beforeCreate/beforeUpdate hashea la contraseña con bcrypt.
- *              toJSON() elimina el campo password de cualquier respuesta.
- */
-
 import { DataTypes } from 'sequelize';
 import bcrypt from 'bcrypt';
 import sequelize from '../../config/db.js';
@@ -18,16 +11,22 @@ const Usuario = sequelize.define(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
+    // Llave foránea ahora en Usuario
+    id_empleado: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      unique: { name: 'uq_usuario_id_empleado', msg: 'Este empleado ya tiene un usuario asociado.' },
+      references: {
+        model: 'empleados',
+        key: 'id',
+      },
+    },
     nombre_usuario: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: { name: 'uq_usuario_nombre_usuario', msg: 'El nombre de usuario ya está en uso.' },
       validate: {
         notEmpty: { msg: 'El nombre de usuario es obligatorio.' },
-        len: {
-          args: [3, 50],
-          msg: 'El nombre de usuario debe tener entre 3 y 50 caracteres.',
-        },
       },
     },
     email: {
@@ -35,35 +34,20 @@ const Usuario = sequelize.define(
       allowNull: false,
       unique: { name: 'uq_usuario_email', msg: 'El email ya está registrado.' },
       validate: {
-        notEmpty: { msg: 'El email es obligatorio.' },
         isEmail: { msg: 'El formato del email no es válido.' },
       },
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: { msg: 'La contraseña es obligatoria.' },
-        len: {
-          args: [6, 128],
-          msg: 'La contraseña debe tener al menos 6 caracteres.',
-        },
-      },
     },
     rol: {
       type: DataTypes.ENUM(...ROLES_ARRAY),
       allowNull: false,
       defaultValue: ROLES.EMPLEADO,
-      validate: {
-        isIn: {
-          args: [ROLES_ARRAY],
-          msg: `El rol debe ser uno de: ${ROLES_ARRAY.join(', ')}.`,
-        },
-      },
     },
     activo: {
       type: DataTypes.BOOLEAN,
-      allowNull: false,
       defaultValue: true,
     },
   },
@@ -83,22 +67,16 @@ const Usuario = sequelize.define(
   }
 );
 
-// ─── Regla estricta: eliminar password de toda serialización JSON ───
 Usuario.prototype.toJSON = function () {
   const values = { ...this.get() };
   delete values.password;
   return values;
 };
 
-// ─── Método de instancia: verificar contraseña ───
-Usuario.prototype.validarPassword = async function (candidatePassword) {
-  return bcrypt.compare(candidatePassword, this.password);
-};
-
-// ─── Asociaciones ───
+// Relación invertida: Usuario pertenece a un Empleado
 Usuario.associate = (models) => {
-  Usuario.hasOne(models.Empleado, {
-    foreignKey: 'id_usuario',
+  Usuario.belongsTo(models.Empleado, {
+    foreignKey: 'id_empleado',
     as: 'empleado',
   });
 };
