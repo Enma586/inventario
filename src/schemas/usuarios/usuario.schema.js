@@ -8,47 +8,38 @@ import { ROLES_ARRAY } from '../../constants/index.js';
 import { paginationSchema } from '../pagination.fields.js';
 
 export const registerUsuarioSchema = z.object({
-  nombres: z
-    .string()
-    .trim()
-    .min(1, 'El nombre es obligatorio.')
-    .max(100, 'El nombre no puede exceder 100 caracteres.'),
-  apellidos: z
-    .string()
-    .trim()
-    .min(1, 'Los apellidos son obligatorios.')
-    .max(100, 'Los apellidos no pueden exceder 100 caracteres.'),
-  telefono: z
-    .string()
-    .trim()
-    .max(20)
-    .optional()
-    .nullable(),
-  direccion: z
-    .string()
-    .trim()
-    .max(255)
-    .optional()
-    .nullable(),
-  nombre_usuario: z
-    .string()
-    .trim()
-    .min(3, 'El nombre de usuario debe tener al menos 3 caracteres.')
-    .max(50, 'El nombre de usuario no puede exceder 50 caracteres.'),
-  email: z
-    .string()
-    .trim()
-    .email('El formato del email no es válido.'),
-  password: z
-    .string()
-    .min(6, 'La contraseña debe tener al menos 6 caracteres.')
-    .max(128, 'La contraseña no puede exceder 128 caracteres.'),
-  rol: z
-    .enum(ROLES_ARRAY, {
-      errorMap: () => ({ message: `El rol debe ser uno de: ${ROLES_ARRAY.join(', ')}.` }),
-    })
-    .optional()
-    .default('EMPLEADO'),
+  usuario: z.object({
+    nombre_usuario: z
+      .string()
+      .trim()
+      .min(3, 'El nombre de usuario debe tener al menos 3 caracteres.')
+      .max(50),
+    email: z
+      .string()
+      .trim()
+      .email('El formato del email no es válido.'),
+    password: z
+      .string()
+      .min(6, 'La contraseña debe tener al menos 6 caracteres.'),
+    rol: z
+      .enum(ROLES_ARRAY)
+      .optional()
+      .default('EMPLEADO'),
+  }),
+  empleado: z.object({
+    nombres: z
+      .string()
+      .trim()
+      .min(1, 'El nombre es obligatorio.'),
+    apellidos: z
+      .string()
+      .trim()
+      .min(1, 'Los apellidos son obligatorios.'),
+    dui: z
+      .string()
+      .trim()
+      .regex(/^\d{8}-\d$/, 'El DUI debe tener el formato ########-#'),
+  }),
 });
 
 export const createUsuarioSchema = z.object({

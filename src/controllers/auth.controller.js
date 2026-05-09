@@ -22,24 +22,11 @@ export const login = async (req, res, next) => {
   try {
     const { email, password, rememberMe } = req.body;
 
-    const usuario = await UserService.findUsuarioByEmail(email);
+    // 1. Delegamos toda la lógica de negocio y seguridad al Service
+    const { usuario, token } = await UserService.loginUsuario(email, password, rememberMe);
 
-    if (!usuario || !(await usuario.validarPassword(password))) {
-      return res
-        .status(401)
-        .json({ success: false, message: 'Credenciales inválidas' });
-    }
-
-    if (!usuario.activo) {
-      return res
-        .status(403)
-        .json({ success: false, message: 'Cuenta de usuario desactivada' });
-    }
-
-    const expiresIn = rememberMe ? JWT_REMEMBER_EXPIRES_IN : JWT_EXPIRES_IN;
+    // 2. Calculamos el tiempo de vida de la cookie (Capa HTTP)
     const maxAge = rememberMe ? 30 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000;
-
-    const token = jwt.sign({ id: usuario.id }, JWT_SECRET, { expiresIn });
 
     res.cookie('token', token, {
       httpOnly: true,
@@ -48,11 +35,16 @@ export const login = async (req, res, next) => {
       maxAge,
     });
 
+    // 3. Respondemos al cliente enviando también el token en el JSON 
+    //    (esto facilita mucho que Bruno/Postman lo capturen en los tests)
     res.status(200).json({
       success: true,
-      data: { usuario: usuario.toJSON() },
+      token, 
+      data: { usuario },
     });
   } catch (err) {
+    // Si la contraseña está mal o el usuario no existe, el AppError del Service
+    // caerá directamente aquí y tu errorHandler global lo manejará perfectamente.
     next(err);
   }
 };

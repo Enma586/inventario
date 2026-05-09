@@ -35,25 +35,29 @@ export const createUsuario = async (data) => {
 };
 
 // ─── Registro completo (Usuario + Empleado en transacción) ──────
+// ─── Registro completo (Usuario + Empleado en transacción) ──────
 export const registerUsuarioEmpleado = async ({ usuario: userData, empleado: empData }) => {
   const transaction = await sequelize.transaction();
 
   try {
-    const salt = await bcrypt.genSalt(BCRYPT_SALT_ROUNDS);
-    const password = await bcrypt.hash(userData.password, salt);
-
-    const usuario = await Usuario.create(
-      { ...userData, password },
+    // 1. PRIMERO creamos el empleado (no depende del usuario)
+    const empleado = await Empleado.create(
+      { ...empData },
       { transaction }
     );
 
-    const empleado = await Empleado.create(
-      { ...empData, id_usuario: usuario.id },
+    // 3. SEGUNDO creamos el usuario, pasándole el ID del empleado recién creado
+    const usuario = await Usuario.create(
+      { 
+        ...userData, 
+        id_empleado: empleado.id // <-- ¡Aquí está la magia que faltaba!
+      },
       { transaction }
     );
 
     await transaction.commit();
 
+    // 4. Generamos el token de acceso
     const token = jwt.sign({ id: usuario.id }, JWT_SECRET, {
       expiresIn: JWT_EXPIRES_IN,
     });
@@ -67,6 +71,7 @@ export const registerUsuarioEmpleado = async ({ usuario: userData, empleado: emp
       token,
     };
   } catch (error) {
+    // Si algo falla (ej. el DUI ya existe), deshacemos todo para no dejar datos huérfanos
     await transaction.rollback();
     throw error;
   }

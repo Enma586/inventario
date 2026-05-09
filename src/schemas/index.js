@@ -18,7 +18,8 @@ export {
   createEmpleadoSchema,
   updateEmpleadoSchema,
   queryEmpleadoSchema,
-  registerSchema
+  registerSchema,
+  registerUsuarioSchema
 } from './usuarios/index.js';
 
 // ─── Productos ───────────────────────────────────────────────────

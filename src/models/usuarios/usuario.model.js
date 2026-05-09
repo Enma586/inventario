@@ -73,6 +73,10 @@ Usuario.prototype.toJSON = function () {
   return values;
 };
 
+Usuario.prototype.validarPassword = async function (passwordPlano) {
+  return await bcrypt.compare(passwordPlano, this.password);
+};
+
 // Relación invertida: Usuario pertenece a un Empleado
 Usuario.associate = (models) => {
   Usuario.belongsTo(models.Empleado, {

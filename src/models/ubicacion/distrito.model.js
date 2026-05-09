@@ -23,7 +23,6 @@ const Distrito = sequelize.define('Distrito', {
 
 Distrito.associate = (models) => {
   Distrito.belongsTo(models.Municipio, { foreignKey: 'id_municipio', as: 'municipio' });
-  Distrito.hasMany(models.Empleado, { foreignKey: 'id_distrito', as: 'empleados' });
 };
 
 export default Distrito;

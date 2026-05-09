@@ -22,7 +22,7 @@ process.on('unhandledRejection', (err) => {
 const startServer = async () => {
     try {
         await connectDB();
-        await sequelize.sync({ force: true });
+        await sequelize.sync({ alter: true });
         console.log('Todos los modelos fueron sincronizados exitosamente.');
         server.listen(env.PORT, () => {
             console.log(`Servidor corriendo en el puerto ${env.PORT}`);
