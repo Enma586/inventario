@@ -1,11 +1,5 @@
-/**
- * @file src/controllers/usuarios/usuario.controller.js
- * @description Controlador CRUD de Usuario (admin).
- *              Separado de auth — solo operaciones de datos.
- */
-
-import * as UserService from '../../services/index.js';
-import { AppError } from '../../utils/AppError.js';
+import * as UserService from "../../services/index.js";
+import { AppError } from "../../utils/AppError.js";
 
 export const findAll = async (req, res, next) => {
   try {
@@ -16,19 +10,19 @@ export const findAll = async (req, res, next) => {
   }
 };
 
-export const create = async (req, res, next) => {
+export const findById = async (req, res, next) => {
   try {
-    const usuario = await UserService.createUsuario(req.body);
-    res.status(201).json({ success: true, data: usuario.toJSON() });
+    const usuario = await UserService.findUsuarioById(req.params.id);
+    res.status(200).json({ success: true, data: usuario.toJSON() });
   } catch (err) {
     next(err);
   }
 };
 
-export const getById = async (req, res, next) => {
+export const create = async (req, res, next) => {
   try {
-    const usuario = await UserService.findUsuarioById(req.params.id);
-    res.status(200).json({ success: true, data: usuario.toJSON() });
+    const usuario = await UserService.createUsuario(req.body);
+    res.status(201).json({ success: true, data: usuario.toJSON() });
   } catch (err) {
     next(err);
   }
