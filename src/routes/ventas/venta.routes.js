@@ -40,7 +40,7 @@ router.put(
 router.put(
   "/:id/anular",
   auth,
-  roleGuard("ADMIN").
+  roleGuard("ADMIN"),
   validate(paramsIdSchema, "params"),
   ventaController.anular,
 );
