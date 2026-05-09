@@ -1,34 +1,25 @@
 /**
  * @file src/middlewares/auth.js
- * @description Middleware de autenticación JWT.
- *              Extrae token del header Authorization: Bearer <token>.
- *              Verifica firma, busca usuario en BD, y lo adjunta a req.user.
+ * @description Middleware de autenticación JWT vía httpOnly cookie.
  */
 
 import jwt from 'jsonwebtoken';
 import models from '../models/index.js';
 import { AppError } from '../utils/AppError.js';
-import { JWT_SECRET, AUTH_HEADER, TOKEN_PREFIX } from '../constants/index.js';
+import { JWT_SECRET } from '../constants/index.js';
 
 const { Usuario } = models;
 
 export const auth = async (req, res, next) => {
   try {
-    // 1. Extraer token del header
-    const authHeader = req.headers[AUTH_HEADER];
-    if (!authHeader || !authHeader.startsWith(TOKEN_PREFIX)) {
-      throw new AppError('Token de autenticación no proporcionado.', 401);
-    }
+    const token = req.cookies.token;
 
-    const token = authHeader.split(' ')[1];
     if (!token) {
-      throw new AppError('Token de autenticación no proporcionado.', 401);
+      throw new AppError('No se proporcionó token de autenticación.', 401);
     }
 
-    // 2. Verificar firma JWT
     const decoded = jwt.verify(token, JWT_SECRET);
 
-    // 3. Buscar usuario en BD
     const usuario = await Usuario.findByPk(decoded.id);
 
     if (!usuario) {
@@ -36,10 +27,9 @@ export const auth = async (req, res, next) => {
     }
 
     if (!usuario.activo) {
-      throw new AppError('Tu cuenta ha sido desactivada. Contacte al administrador.', 401);
+      throw new AppError('Tu cuenta ha sido desactivada.', 401);
     }
 
-    // 4. Adjuntar al request
     req.user = usuario;
     next();
   } catch (err) {
