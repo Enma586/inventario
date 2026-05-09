@@ -22,4 +22,4 @@ export const AUTH_HEADER = 'authorization';
 export const TOKEN_PREFIX = 'Bearer';
 
 /** Duración extendida cuando el usuario marca "Recordarme". */
-export const JWT_REMEMBER_EXPIRES_IN = process.env.JWT_REMEMBER_EXPIRES_IN || '1d';
+export const JWT_REMEMBER_EXPIRES_IN = process.env.JWT_REMEMBER_EXPIRES_IN || '24h';
