@@ -18,6 +18,7 @@ import * as productos from './productos/index.js';
 import * as sucursal from './sucursal/index.js';
 import * as ventas from './ventas/index.js';
 import * as compras from './compras/index.js';
+import * as ubicacion from './ubicacion/index.js';
 
 // ─── Agrupación de todos los modelos ─────────────────────────────
 const models = {
@@ -26,6 +27,7 @@ const models = {
   ...sucursal,
   ...ventas,
   ...compras,
+  ... ubicacion,
 };
 
 // ─── Inicialización de asociaciones ──────────────────────────────
