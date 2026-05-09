@@ -7,6 +7,7 @@ export {
   createVentaSchema,
   updateVentaSchema,
   queryVentaSchema,
+  createVentaCompletaSchema
 } from './venta.schema.js';
 
 export {

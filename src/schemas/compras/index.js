@@ -7,6 +7,7 @@ export {
   createCompraSchema,
   updateCompraSchema,
   queryCompraSchema,
+  createCompraCompletaSchema
 } from './compra.schema.js';
 
 export {

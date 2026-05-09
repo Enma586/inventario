@@ -85,6 +85,10 @@ export const loginSchema = z.object({
   password: z
     .string()
     .min(1, 'La contraseña es obligatoria.'),
+  rememberMe: z
+    .boolean()
+    .optional()
+    .default(false),
 });
 
 export const updateUsuarioSchema = z.object({
@@ -103,4 +107,40 @@ export const queryUsuarioSchema = paginationSchema.extend({
     .transform((v) => v === 'true')
     .optional(),
   search: z.string().optional(),
+});
+
+export const registerSchema = z.object({
+  usuario: z.object({
+    nombre_usuario: z
+      .string()
+      .trim()
+      .min(3, 'El nombre de usuario debe tener al menos 3 caracteres.')
+      .max(50),
+    email: z
+      .string()
+      .trim()
+      .email('El formato del email no es válido.'),
+    password: z
+      .string()
+      .min(6, 'La contraseña debe tener al menos 6 caracteres.')
+      .max(128),
+    rol: z
+      .enum(ROLES_ARRAY)
+      .optional()
+      .default('EMPLEADO'),
+  }),
+  empleado: z.object({
+    nombres: z
+      .string()
+      .trim()
+      .min(1, 'El nombre del empleado es obligatorio.')
+      .max(100),
+    apellidos: z
+      .string()
+      .trim()
+      .min(1, 'Los apellidos del empleado son obligatorios.')
+      .max(100),
+    telefono: z.string().trim().max(20).optional().nullable(),
+    direccion: z.string().trim().max(255).optional().nullable(),
+  }),
 });

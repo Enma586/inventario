@@ -18,6 +18,7 @@ export {
   createEmpleadoSchema,
   updateEmpleadoSchema,
   queryEmpleadoSchema,
+  registerSchema
 } from './usuarios/index.js';
 
 // ─── Productos ───────────────────────────────────────────────────
@@ -52,6 +53,7 @@ export {
   createVentaDetalleSchema,
   createVentaDetalleBulkSchema,
   updateVentaDetalleSchema,
+  createVentaCompletaSchema
 } from './ventas/index.js';
 
 // ─── Compras ─────────────────────────────────────────────────────
@@ -62,4 +64,5 @@ export {
   createCompraDetalleSchema,
   createCompraDetalleBulkSchema,
   updateCompraDetalleSchema,
+  createCompraCompletaSchema
 } from './compras/index.js';

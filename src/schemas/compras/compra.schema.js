@@ -49,3 +49,16 @@ export const queryCompraSchema = paginationSchema.extend({
   id_sucursal: z.string().uuid().optional(),
   search: z.string().optional(),
 });
+
+export const createCompraCompletaSchema = z.object({
+  compra: createCompraSchema,
+  detalles: z
+    .array(
+      z.object({
+        id_producto: z.string().uuid('ID de producto inválido.'),
+        cantidad: z.number().int().min(1),
+        costo_unitario: z.number().int().min(0),
+      })
+    )
+    .min(1, 'Al menos un detalle de compra es obligatorio.'),
+});

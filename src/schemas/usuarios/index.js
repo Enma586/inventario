@@ -8,7 +8,8 @@ export {
   loginSchema,
   updateUsuarioSchema,
   queryUsuarioSchema,
-  registerUsuarioSchema
+  registerUsuarioSchema,
+  registerSchema
 } from './usuario.schema.js';
 
 export {

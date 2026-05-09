@@ -92,3 +92,16 @@ export const queryVentaSchema = paginationSchema.extend({
   id_empleado: z.string().uuid().optional(),
   search: z.string().optional(),
 });
+
+export const createVentaCompletaSchema = z.object({
+  venta: createVentaSchema,
+  detalles: z
+    .array(
+      z.object({
+        id_producto: z.string().uuid('ID de producto inválido.'),
+        precio_unitario_venta: z.number().int().min(0),
+        cantidad: z.number().int().min(1),
+      })
+    )
+    .min(1, 'Al menos un detalle de venta es obligatorio.'),
+});
