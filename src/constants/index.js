@@ -41,6 +41,7 @@ export {
   BCRYPT_SALT_ROUNDS,
   AUTH_HEADER,
   TOKEN_PREFIX,
+  JWT_REMEMBER_EXPIRES_IN,
 } from './auth.constants.js';
 
 export {

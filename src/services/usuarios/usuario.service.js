@@ -16,6 +16,7 @@ import {
   JWT_SECRET,
   JWT_EXPIRES_IN,
   BCRYPT_SALT_ROUNDS,
+    JWT_REMEMBER_EXPIRES_IN,
 } from '../../constants/index.js';
 
 const { Usuario, Empleado } = models;
@@ -72,7 +73,8 @@ export const registerUsuarioEmpleado = async ({ usuario: userData, empleado: emp
 };
 
 // ─── Login ───────────────────────────────────────────────────────
-export const loginUsuario = async (email, password) => {
+// ─── Login ───────────────────────────────────────────────────────
+export const loginUsuario = async (email, password, rememberMe = false) => {
   const usuario = await Usuario.findOne({
     where: { email },
   });
@@ -90,9 +92,9 @@ export const loginUsuario = async (email, password) => {
     throw new AppError('La cuenta está desactivada. Contacte al administrador.', 403);
   }
 
-  const token = jwt.sign({ id: usuario.id }, JWT_SECRET, {
-    expiresIn: JWT_EXPIRES_IN,
-  });
+  const expiresIn = rememberMe ? JWT_REMEMBER_EXPIRES_IN : JWT_EXPIRES_IN;
+
+  const token = jwt.sign({ id: usuario.id }, JWT_SECRET, { expiresIn });
 
   return {
     usuario: usuario.toJSON(),

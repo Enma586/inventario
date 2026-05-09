@@ -20,3 +20,6 @@ export const AUTH_HEADER = 'authorization';
 
 /** Prefijo esperado en el header de autorización. */
 export const TOKEN_PREFIX = 'Bearer';
+
+/** Duración extendida cuando el usuario marca "Recordarme". */
+export const JWT_REMEMBER_EXPIRES_IN = process.env.JWT_REMEMBER_EXPIRES_IN || '1d';
