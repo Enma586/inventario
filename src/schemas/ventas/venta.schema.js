@@ -15,8 +15,8 @@ export const createVentaSchema = z.object({
   numero_factura: z
     .string()
     .trim()
-    .min(1, 'El número de factura es obligatorio.')
-    .max(50, 'El número de factura no puede exceder 50 caracteres.'),
+    .max(50, 'El número de factura no puede exceder 50 caracteres.')
+    .optional(),
   id_sucursal: z
     .string()
     .uuid('ID de sucursal inválido.'),

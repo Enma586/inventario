@@ -4,7 +4,10 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "seed": "node src/database/seeders/ubicacion.seeder.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

@@ -11,7 +11,12 @@ export const validate = (schema, source = 'body') => (req, res, next) => {
     const result = schema.safeParse(req[source]);
 
     if (!result.success) {
-        const messages = result.error.issues.map(i => i.message);
+        // Modificación clave: ahora incluimos el nombre del campo exacto en el mensaje
+        const messages = result.error.issues.map(i => {
+            const campo = i.path.join('.');
+            return campo ? `[${campo}]: ${i.message}` : i.message;
+        });
+        
         const err = new AppError(messages.join(', '), 400);
         err.details = messages;
         return next(err);
