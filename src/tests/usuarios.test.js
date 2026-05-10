@@ -28,7 +28,8 @@ beforeAll(async () => {
     empleado: { 
       nombres: 'Admin', 
       apellidos: 'Root', 
-      dui: '00000000-0'    },
+      dui: '00000000-0' //  El dato que pedía Zod
+    },
   });
 
   if (!resRegister.body.success) {
