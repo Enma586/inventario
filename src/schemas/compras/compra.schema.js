@@ -12,8 +12,8 @@ export const createCompraSchema = z.object({
   numero_orden: z
     .string()
     .trim()
-    .min(1, 'El número de orden es obligatorio.')
-    .max(50, 'El número de orden no puede exceder 50 caracteres.'),
+    .max(50, 'El número de orden no puede exceder 50 caracteres.')
+    .optional(), // Se genera automáticamente si no se proporciona
   id_proveedor: z
     .string()
     .uuid('ID de proveedor inválido.'),
