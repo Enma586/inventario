@@ -1,13 +1,15 @@
 /**
  * @file src/schemas/productos/producto.schema.js
- * @description Zod schemas para Producto.
+ * @description Zod schemas para Producto con soporte para OpenAPI.
  */
 
 import { z } from 'zod';
 import { ESTADO_PRODUCTO_ARRAY } from '../../constants/index.js';
 import { paginationSchema } from '../pagination.fields.js';
+import { registry } from '../../config/swagger.js';
 
-// ─── Crear ───────────────────────────────────────────────────────
+// ─── Componentes (Esquemas) ──────────────────────────────────────
+
 export const createProductoSchema = z.object({
   sku: z
     .string()
@@ -47,9 +49,8 @@ export const createProductoSchema = z.object({
     .min(0, 'El precio de venta no puede ser negativo.')
     .optional()
     .default(0),
-});
+}).openapi('CreateProducto');
 
-// ─── Actualizar ──────────────────────────────────────────────────
 export const updateProductoSchema = z.object({
   sku: z.string().trim().min(1).max(50).optional(),
   nombre: z.string().trim().min(1).max(200).optional(),
@@ -58,9 +59,8 @@ export const updateProductoSchema = z.object({
   estado: z.enum(ESTADO_PRODUCTO_ARRAY).optional(),
   costo_compra: z.number().int().min(0).optional(),
   precio_venta: z.number().int().min(0).optional(),
-});
+}).openapi('UpdateProducto');
 
-// ─── Query (listado con filtros) ─────────────────────────────────
 export const queryProductoSchema = paginationSchema.extend({
   estado: z.enum(ESTADO_PRODUCTO_ARRAY).optional(),
   id_categoria: z.string().uuid().optional(),
@@ -68,4 +68,94 @@ export const queryProductoSchema = paginationSchema.extend({
   search: z.string().optional(),
   precioMin: z.coerce.number().int().min(0).optional(),
   precioMax: z.coerce.number().int().min(0).optional(),
+}).openapi('QueryProducto');
+
+// ─── Documentación de Rutas (Endpoints) ──────────────────────────
+
+registry.registerPath({
+  method: 'post',
+  path: '/api/productos',
+  tags: ['Productos'],
+  summary: 'Registrar un nuevo producto en el catálogo',
+  security: [{ cookieAuth: [] }],
+  request: {
+    body: {
+      content: {
+        'application/json': { schema: createProductoSchema }
+      }
+    }
+  },
+  responses: {
+    201: {
+      description: 'Producto creado exitosamente',
+    },
+    400: {
+      description: 'Errores de validación en la solicitud',
+    },
+    409: {
+      description: 'Conflicto - El SKU del producto ya existe',
+    }
+  }
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/api/productos',
+  tags: ['Productos'],
+  summary: 'Obtener lista de productos con soporte para paginación y filtros',
+  security: [{ cookieAuth: [] }],
+  request: {
+    query: queryProductoSchema
+  },
+  responses: {
+    200: {
+      description: 'Lista de productos obtenida exitosamente',
+    }
+  }
+});
+
+registry.registerPath({
+  method: 'put',
+  path: '/api/productos/{id}',
+  tags: ['Productos'],
+  summary: 'Actualizar los datos de un producto existente',
+  security: [{ cookieAuth: [] }],
+  request: {
+    params: z.object({ id: z.string().uuid() }),
+    body: {
+      content: {
+        'application/json': { schema: updateProductoSchema }
+      }
+    }
+  },
+  responses: {
+    200: {
+      description: 'Producto actualizado exitosamente',
+    },
+    400: {
+      description: 'Errores de validación en la solicitud o UUID inválido',
+    },
+    404: {
+      description: 'Producto no encontrado',
+    }
+  }
+});
+
+registry.registerPath({
+  method: 'delete',
+  path: '/api/productos/{id}',
+  tags: ['Productos'],
+  summary: 'Eliminar un producto del sistema',
+  security: [{ cookieAuth: [] }],
+  request: {
+    params: z.object({ id: z.string().uuid() })
+  },
+  responses: {
+    200: {
+      description: 'Producto eliminado exitosamente',
+    },
+    404: {
+      description: 'Producto no encontrado',
+    }
+  }
 });

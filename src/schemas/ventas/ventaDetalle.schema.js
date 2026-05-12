@@ -1,11 +1,13 @@
 /**
  * @file src/schemas/ventas/ventaDetalle.schema.js
- * @description Zod schemas para VentaDetalle (línea de factura).
+ * @description Zod schemas para VentaDetalle con soporte para OpenAPI.
  */
 
 import { z } from 'zod';
+import { registry } from '../../config/swagger.js';
 
-// ─── Crear ───────────────────────────────────────────────────────
+// ─── Componentes (Esquemas) ──────────────────────────────────────
+
 export const createVentaDetalleSchema = z.object({
   id_venta: z
     .string()
@@ -30,16 +32,78 @@ export const createVentaDetalleSchema = z.object({
     .number()
     .int('El subtotal debe ser un entero (centavos).')
     .min(0, 'El subtotal no puede ser negativo.'),
-});
+}).openapi('VentaDetalleBase');
 
-// ─── Crear lote (array de detalles para una misma venta) ─────────
 export const createVentaDetalleBulkSchema = z
   .array(createVentaDetalleSchema)
-  .min(1, 'Al menos un detalle de venta es obligatorio.');
+  .min(1, 'Al menos un detalle de venta es obligatorio.')
+  .openapi('VentaDetalleBulk');
 
-// ─── Actualizar ──────────────────────────────────────────────────
 export const updateVentaDetalleSchema = z.object({
   precio_unitario_venta: z.number().int().min(0).optional(),
   cantidad: z.number().int().min(1).optional(),
   subtotal: z.number().int().min(0).optional(),
+}).openapi('UpdateVentaDetalle');
+
+// ─── Documentación de Rutas (Endpoints) ──────────────────────────
+
+registry.registerPath({
+  method: 'post',
+  path: '/api/ventas/{id_venta}/detalles',
+  tags: ['Ventas - Detalles'],
+  summary: 'Agregar una línea de detalle a una factura existente',
+  security: [{ cookieAuth: [] }],
+  request: {
+    params: z.object({ id_venta: z.string().uuid() }),
+    body: {
+      content: {
+        'application/json': { schema: createVentaDetalleSchema }
+      }
+    }
+  },
+  responses: {
+    201: {
+      description: 'Detalle agregado exitosamente',
+    },
+    400: {
+      description: 'Errores de validación',
+    }
+  }
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/api/ventas/{id_venta}/detalles',
+  tags: ['Ventas - Detalles'],
+  summary: 'Obtener todas las líneas de detalle de una venta',
+  security: [{ cookieAuth: [] }],
+  request: {
+    params: z.object({ id_venta: z.string().uuid() })
+  },
+  responses: {
+    200: {
+      description: 'Lista de detalles de la venta',
+    }
+  }
+});
+
+registry.registerPath({
+  method: 'put',
+  path: '/api/ventas/detalles/{id}',
+  tags: ['Ventas - Detalles'],
+  summary: 'Actualizar cantidad o precio de una línea de detalle',
+  security: [{ cookieAuth: [] }],
+  request: {
+    params: z.object({ id: z.string().uuid() }),
+    body: {
+      content: {
+        'application/json': { schema: updateVentaDetalleSchema }
+      }
+    }
+  },
+  responses: {
+    200: {
+      description: 'Detalle actualizado exitosamente',
+    }
+  }
 });

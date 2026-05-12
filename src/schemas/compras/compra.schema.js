@@ -1,19 +1,21 @@
 /**
  * @file src/schemas/compras/compra.schema.js
- * @description Zod schemas para Compra (orden de compra).
+ * @description Zod schemas para Compra (orden de compra) con soporte para OpenAPI.
  */
 
 import { z } from 'zod';
 import { ESTADO_ENTREGA_ARRAY } from '../../constants/index.js';
 import { paginationSchema } from '../pagination.fields.js';
+import { registry } from '../../config/swagger.js';
 
-// ─── Crear ───────────────────────────────────────────────────────
+// ─── Componentes (Esquemas) ──────────────────────────────────────
+
 export const createCompraSchema = z.object({
   numero_orden: z
     .string()
     .trim()
     .max(50, 'El número de orden no puede exceder 50 caracteres.')
-    .optional(), // Se genera automáticamente si no se proporciona
+    .optional(),
   id_proveedor: z
     .string()
     .uuid('ID de proveedor inválido.'),
@@ -32,15 +34,13 @@ export const createCompraSchema = z.object({
     })
     .optional()
     .default('PENDIENTE'),
-});
+}).openapi('CompraBase');
 
-// ─── Actualizar ──────────────────────────────────────────────────
 export const updateCompraSchema = z.object({
   total_compra: z.number().int().min(0).optional(),
   estado_entrega: z.enum(ESTADO_ENTREGA_ARRAY).optional(),
-});
+}).openapi('UpdateCompra');
 
-// ─── Query ───────────────────────────────────────────────────────
 export const queryCompraSchema = paginationSchema.extend({
   fechaDesde: z.coerce.date().optional(),
   fechaHasta: z.coerce.date().optional(),
@@ -48,7 +48,7 @@ export const queryCompraSchema = paginationSchema.extend({
   id_proveedor: z.string().uuid().optional(),
   id_sucursal: z.string().uuid().optional(),
   search: z.string().optional(),
-});
+}).openapi('QueryCompra');
 
 export const createCompraCompletaSchema = z.object({
   compra: createCompraSchema,
@@ -61,4 +61,66 @@ export const createCompraCompletaSchema = z.object({
       })
     )
     .min(1, 'Al menos un detalle de compra es obligatorio.'),
+}).openapi('CreateCompraCompleta');
+
+// ─── Documentación de Rutas (Endpoints) ──────────────────────────
+
+registry.registerPath({
+  method: 'post',
+  path: '/api/compras',
+  tags: ['Compras'],
+  summary: 'Registrar una nueva compra con sus detalles',
+  security: [{ cookieAuth: [] }],
+  request: {
+    body: {
+      content: {
+        'application/json': { schema: createCompraCompletaSchema }
+      }
+    }
+  },
+  responses: {
+    201: {
+      description: 'Compra registrada exitosamente',
+    },
+    400: {
+      description: 'Errores de validación',
+    }
+  }
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/api/compras',
+  tags: ['Compras'],
+  summary: 'Listar compras con paginación y filtros',
+  security: [{ cookieAuth: [] }],
+  request: {
+    query: queryCompraSchema
+  },
+  responses: {
+    200: {
+      description: 'Lista de compras',
+    }
+  }
+});
+
+registry.registerPath({
+  method: 'put',
+  path: '/api/compras/{id}',
+  tags: ['Compras'],
+  summary: 'Actualizar el estado o total de una compra',
+  security: [{ cookieAuth: [] }],
+  request: {
+    params: z.object({ id: z.string().uuid() }),
+    body: {
+      content: {
+        'application/json': { schema: updateCompraSchema }
+      }
+    }
+  },
+  responses: {
+    200: {
+      description: 'Compra actualizada exitosamente',
+    }
+  }
 });
