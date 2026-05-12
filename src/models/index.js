@@ -19,6 +19,7 @@ import * as sucursal from './sucursal/index.js';
 import * as ventas from './ventas/index.js';
 import * as compras from './compras/index.js';
 import * as ubicacion from './ubicacion/index.js';
+import * as bitacora from './bitacora/index.js';
 
 // ─── Agrupación de todos los modelos ─────────────────────────────
 const models = {
@@ -28,6 +29,7 @@ const models = {
   ...ventas,
   ...compras,
   ... ubicacion,
+  ... bitacora,
 };
 
 // ─── Inicialización de asociaciones ──────────────────────────────

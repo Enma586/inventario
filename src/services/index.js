@@ -14,3 +14,4 @@ export * from './productos/index.js';
 export * from './sucursal/index.js';
 export * from './ventas/index.js';
 export * from './compras/index.js';
+export * from './bitacora/index.js';

@@ -1,0 +1,1 @@
+export * as bitacoraController from './bitacora.controller.js';

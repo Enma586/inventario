@@ -10,6 +10,7 @@ import {
 import { sucursalRoutes, stockRoutes } from "./sucursal/index.js";
 import { ventaRoutes, ventaDetalleRoutes } from "./ventas/index.js";
 import { compraRoutes, compraDetalleRoutes } from "./compras/index.js";
+import { bitacoraRoutes } from "./bitacora/index.js";
 
 const router = Router();
 
@@ -25,5 +26,6 @@ router.use("/ventas", ventaRoutes);
 router.use("/ventas/:idVenta/detalles", ventaDetalleRoutes);
 router.use("/compras", compraRoutes);
 router.use("/compras/:idCompra/detalles", compraDetalleRoutes);
+router.use("/bitacora", bitacoraRoutes);
 
 export default router;
