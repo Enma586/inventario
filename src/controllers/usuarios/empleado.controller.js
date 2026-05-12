@@ -27,6 +27,7 @@ export const findById = async (req, res, next) => {
 export const create = async (req, res, next) => {
   try {
     const empleado = await createEmpleado(req.body);
+    res.locals.createdId = empleado.id;
     res.status(201).json({ success: true, data: empleado.toJSON() });
   } catch (err) {
     next(err);

@@ -26,6 +26,7 @@ export const create = async (req, res, next) => {
   try {
     const { venta, detalles } = req.body;
     const r = await createVentaCompleta(venta, detalles);
+    res.locals.createdId = r.id;
     res.status(201).json({ success: true, data: r.toJSON() });
   } catch (err) {
     next(err);

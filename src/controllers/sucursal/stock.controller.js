@@ -32,7 +32,8 @@ export const findByProductoSucursal = async (req, res, next) => {
 };
 export const upsert = async (req, res, next) => {
   try {
-    const r = await upsertStock(req.body);
+     const r = await upsertStock(req.body);
+     if (r.created) res.locals.createdId = r.id_producto;
     res.status(r.created ? 201 : 200).json({ success: true, data: r });
   } catch (err) {
     next(err);

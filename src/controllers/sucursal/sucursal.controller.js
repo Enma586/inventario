@@ -25,6 +25,7 @@ export const findById = async (req, res, next) => {
 export const create = async (req, res, next) => {
   try {
     const r = await createSucursal(req.body);
+    res.locals.createdId = r.id;
     res.status(201).json({ success: true, data: r.toJSON() });
   } catch (err) {
     next(err);

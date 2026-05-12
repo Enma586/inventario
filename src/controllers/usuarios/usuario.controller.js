@@ -22,6 +22,7 @@ export const findById = async (req, res, next) => {
 export const create = async (req, res, next) => {
   try {
     const usuario = await UserService.createUsuario(req.body);
+    res.locals.createdId = usuario.id;
     res.status(201).json({ success: true, data: usuario.toJSON() });
   } catch (err) {
     next(err);

@@ -6,5 +6,6 @@ export default defineConfig({
     environment: 'node',
     setupFiles: ['./src/tests/setup.js'],
     testTimeout: 15000,
+    maxConcurrency: 1,        // ← un archivo a la vez, sin carreras
   },
 });
