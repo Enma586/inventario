@@ -1,5 +1,5 @@
 import models from '../../models/index.js';
-import { getPagination, getPagingData } from '../../utils/pagination.js';
+import { sequelizePaginate } from '../helpers.js';
 
 const { Bitacora, Usuario } = models;
 
@@ -12,12 +12,10 @@ export const registrarLog = async (logData, transaction = null) => {
 };
 
 export const obtenerBitacora = async (page, limit, filtros = {}) => {
-  const { limit: limitDoc, offset } = getPagination(page, limit);
-  
-  const data = await Bitacora.findAndCountAll({
+  return sequelizePaginate(Bitacora, {
+    page,
+    limit,
     where: filtros,
-    limit: limitDoc,
-    offset,
     order: [['createdAt', 'DESC']],
     include: [{
       model: Usuario,
@@ -25,6 +23,4 @@ export const obtenerBitacora = async (page, limit, filtros = {}) => {
       attributes: ['nombre_usuario', 'rol']
     }]
   });
-
-  return getPagingData(data, page, limitDoc);
 };
