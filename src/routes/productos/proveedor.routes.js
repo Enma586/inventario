@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { proveedorController } from "../../controllers/index.js";
-import { auth, validate, roleGuard } from "../../middlewares/index.js";
+import { auth, validate, roleGuard, auditLog } from "../../middlewares/index.js";
 import {
   paramsIdSchema,
   createProveedorSchema,
@@ -28,6 +28,7 @@ router.post(
   roleGuard("ADMIN", "EMPLEADO"),
 
   validate(createProveedorSchema, "body"),
+  auditLog('Proveedor'),
   proveedorController.create,
 );
 router.put(
@@ -36,6 +37,7 @@ router.put(
     roleGuard("ADMIN"),
   validate(paramsIdSchema, "params"),
   validate(updateProveedorSchema, "body"),
+  auditLog('Proveedor'),
   proveedorController.update,
 );
 router.delete(
@@ -43,6 +45,7 @@ router.delete(
   auth,
     roleGuard("ADMIN"),
   validate(paramsIdSchema, "params"),
+  auditLog('Proveedor'),
   proveedorController.remove,
 );
 

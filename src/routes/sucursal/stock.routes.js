@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { stockController } from "../../controllers/index.js";
-import { auth, validate, roleGuard } from "../../middlewares/index.js";
+import { auth, validate, roleGuard, auditLog } from "../../middlewares/index.js";
 import {
   createStockSchema,
   updateStockSchema,
@@ -27,6 +27,7 @@ router.post(
   auth,
   roleGuard("ADMIN", "EMPLEADO"),
   validate(createStockSchema, "body"),
+  auditLog('Stock'),
   stockController.upsert,
 );
 router.get(
@@ -41,6 +42,7 @@ router.put(
   roleGuard("ADMIN"),
   validate(stockParamsSchema, "params"),
   validate(updateStockSchema, "body"),
+  auditLog('Stock'),
   stockController.updateCantidad,
 );
 router.delete(
@@ -49,6 +51,7 @@ router.delete(
   roleGuard("ADMIN"),
 
   validate(stockParamsSchema, "params"),
+  auditLog('Stock'),
   stockController.remove,
 );
 

@@ -1,4 +1,4 @@
-import * as bitacoraService from '../../services/index.js';
+import { obtenerBitacora } from '../../services/index.js';
 
 export const getBitacora = async (req, res, next) => {
   try {
@@ -7,7 +7,7 @@ export const getBitacora = async (req, res, next) => {
     if (accion) filtros.accion = accion;
     if (entidad) filtros.entidad = entidad;
 
-    const data = await bitacoraService.obtenerBitacora(page, limit, filtros);
+    const data = await obtenerBitacora(page, limit, filtros);
     res.status(200).json({ success: true, ...data });
   } catch (error) {
     next(error);

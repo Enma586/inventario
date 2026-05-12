@@ -14,7 +14,7 @@ export const auditLog = (entidad) => {
           id_usuario: req.user?.id || null,
           accion: acciones[req.method],
           entidad,
-          entidad_id: req.params?.id || null,
+          entidad_id: req.params?.id || res.locals?.createdId || null,
           detalles: Object.keys(detalles).length ? detalles : null,
           ip: req.ip,
           navegador: req.headers['user-agent']

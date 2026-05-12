@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { ventaController } from "../../controllers/index.js";
-import { auth, validate, roleGuard } from "../../middlewares/index.js";
+import { auth, validate, roleGuard, auditLog } from "../../middlewares/index.js";
 import {
   paramsIdSchema,
   createVentaCompletaSchema,
@@ -27,6 +27,7 @@ router.post(
   auth,
   roleGuard("ADMIN", "EMPLEADO"),
   validate(createVentaCompletaSchema, "body"),
+  auditLog('Venta'),
   ventaController.create,
 );
 router.put(
@@ -35,6 +36,7 @@ router.put(
   roleGuard("ADMIN"),
   validate(paramsIdSchema, "params"),
   validate(updateVentaSchema, "body"),
+  auditLog('Venta'),
   ventaController.update,
 );
 router.put(
@@ -42,6 +44,7 @@ router.put(
   auth,
   roleGuard("ADMIN"),
   validate(paramsIdSchema, "params"),
+  auditLog('Venta'),
   ventaController.anular,
 );
 

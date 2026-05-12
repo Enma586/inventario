@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { sucursalController } from "../../controllers/index.js";
-import { auth, roleGuard, validate } from "../../middlewares/index.js";
+import { auth, roleGuard, validate, auditLog } from "../../middlewares/index.js";
 import {
   paramsIdSchema,
   createSucursalSchema,
@@ -27,6 +27,7 @@ router.post(
   auth,
   roleGuard("ADMIN"),
   validate(createSucursalSchema, "body"),
+  auditLog('Sucursal'),
   sucursalController.create,
 );
 router.put(
@@ -35,6 +36,7 @@ router.put(
   roleGuard("ADMIN"),
   validate(paramsIdSchema, "params"),
   validate(updateSucursalSchema, "body"),
+  auditLog('Sucursal'),
   sucursalController.update,
 );
 router.delete(
@@ -42,6 +44,7 @@ router.delete(
   auth,
   roleGuard("ADMIN"),
   validate(paramsIdSchema, "params"),
+  auditLog('Sucursal'),
   sucursalController.remove,
 );
 

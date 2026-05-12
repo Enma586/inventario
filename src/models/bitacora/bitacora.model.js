@@ -41,4 +41,11 @@ const Bitacora = sequelize.define('Bitacora', {
   updatedAt: false,
 });
 
+Bitacora.associate = (models) => {
+  Bitacora.belongsTo(models.Usuario, {
+    foreignKey: 'id_usuario',
+    as: 'usuario',
+  });
+};
+
 export default Bitacora;

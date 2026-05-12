@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { compraDetalleController } from "../../controllers/index.js";
-import { auth, validate } from "../../middlewares/index.js";
+import { auth, validate, auditLog } from "../../middlewares/index.js";
 import {
   paramsIdSchema,
   createCompraDetalleSchema,
@@ -13,6 +13,7 @@ router.post(
   "/",
   auth,
   validate(createCompraDetalleSchema, "body"),
+  auditLog('CompraDetalle'),
   compraDetalleController.create,
 );
 router.put(
@@ -20,12 +21,14 @@ router.put(
   auth,
   validate(paramsIdSchema, "params"),
   validate(updateCompraDetalleSchema, "body"),
+  auditLog('CompraDetalle'),
   compraDetalleController.update,
 );
 router.delete(
   "/:id",
   auth,
   validate(paramsIdSchema, "params"),
+  auditLog('CompraDetalle'),
   compraDetalleController.remove,
 );
 
