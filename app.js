@@ -7,6 +7,7 @@ import { errorHandler } from "./src/middlewares/index.js";
 import routes from "./src/routes/index.js";
 import { env } from "./src/config/env.js";
 import { setupSwagger } from "./src/config/swagger.js";
+import './src/docs/index.js';
 
 const app = express();
 

@@ -6,6 +6,9 @@ export default defineConfig({
     environment: 'node',
     setupFiles: ['./src/tests/setup.js'],
     testTimeout: 15000,
-    maxConcurrency: 1,        // ← un archivo a la vez, sin carreras
+    pool: 'forks',
+    forks: {
+      singleFork: true,   // ← vitest 4: top-level, no dentro de poolOptions
+    },
   },
 });
