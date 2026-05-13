@@ -461,4 +461,46 @@ const seed = async () => {
   }
 };
 
-seed();
+// ─── Ejecución ───────────────────────────────────────────────────
+export const seedUbicaciones = async () => {
+  try {
+    // 1. Verificamos si ya existen datos para no duplicar ni borrar nada en cada reinicio
+    const count = await Departamento.count();
+    if (count > 0) {
+      console.log('Datos geográficos (Ubicaciones) ya inicializados.');
+      return; 
+    }
+
+    console.log('Iniciando carga de departamentos, municipios y distritos...');
+
+    // Limpiar tablas por seguridad (solo se ejecutará la primera vez)
+    await Distrito.destroy({ where: {}, truncate: true, cascade: true });
+    await Municipio.destroy({ where: {}, truncate: true, cascade: true });
+    await Departamento.destroy({ where: {}, truncate: true, cascade: true });
+
+    let totalDistritos = 0;
+
+    for (const depto of data) {
+      const departamento = await Departamento.create({ nombre: depto.nombre });
+
+      for (const muni of depto.municipios) {
+        const municipio = await Municipio.create({
+          nombre: muni.nombre,
+          id_departamento: departamento.id,
+        });
+
+        for (const distritoNombre of muni.distritos) {
+          await Distrito.create({
+            nombre: distritoNombre,
+            id_municipio: municipio.id,
+          });
+          totalDistritos++;
+        }
+      }
+    }
+
+    console.log(`Seeder completado: ${data.length} Deptos, ${totalDistritos} Distritos.`);
+  } catch (error) {
+    console.error('Error en el seeder de ubicaciones:', error);
+  }
+};

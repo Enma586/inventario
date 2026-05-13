@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon index.js",
     "test": "vitest run",
+    "start": "node index.js",
     "test:watch": "vitest",
     "seed": "node src/database/seeders/ubicacion.seeder.js"
   },

@@ -4,6 +4,7 @@ import { connectDB } from './src/config/db.js';
 import { sequelize } from './src/models/index.js';
 import { initSocket } from './src/config/socket.js';
 import { env } from './src/config/env.js';
+import { seedUbicaciones } from './src/database/seeders/ubicacion.seeder.js'; // <--- IMPORTACIÓN NUEVA
 
 const server = createServer(app);
 
@@ -22,8 +23,14 @@ process.on('unhandledRejection', (err) => {
 const startServer = async () => {
     try {
         await connectDB();
+        
+    
         await sequelize.sync({ alter: true });
         console.log('Todos los modelos fueron sincronizados exitosamente.');
+        
+    
+        await seedUbicaciones(); 
+
         server.listen(env.PORT, () => {
             console.log(`Servidor corriendo en el puerto ${env.PORT}`);
         });
