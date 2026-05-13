@@ -190,7 +190,7 @@ const socket = io('http://localhost:3000', { withCredentials: true })
 
 ## Endpoints
 
-Todas las rutas parten de `/api`. Las marcadas con 🔒 requieren autenticación. Las marcadas con ⚡ requieren rol `ADMIN`.
+Todas las rutas parten de `/api`. Las marcadas con  requieren autenticación. Las marcadas con ⚡ requieren rol `ADMIN`.
 
 ---
 
@@ -274,7 +274,7 @@ Respuesta `201`:
 
 ---
 
-#### `POST /api/auth/logout` 🔒
+#### `POST /api/auth/logout` 
 
 Sin body. Respuesta `200`:
 
@@ -284,7 +284,7 @@ Sin body. Respuesta `200`:
 
 ---
 
-#### `GET /api/auth/me` 🔒
+#### `GET /api/auth/me` 
 
 Respuesta `200`:
 
@@ -312,13 +312,13 @@ Respuesta `200`:
 
 ---
 
-#### `GET /api/auth/verify` 🔒
+#### `GET /api/auth/verify` 
 
 Verifica que el token actual es válido. Misma respuesta que `/me`.
 
 ---
 
-#### `GET /api/auth/renew` 🔒
+#### `GET /api/auth/renew` 
 
 Renueva el token (extiende la sesión). Setea nueva cookie. Respuesta `200`:
 
@@ -333,7 +333,7 @@ Renueva el token (extiende la sesión). Setea nueva cookie. Respuesta `200`:
 
 ### Usuarios
 
-#### `GET /api/usuarios` 🔒
+#### `GET /api/usuarios` 
 
 Query params: `rol` (`ADMIN`|`EMPLEADO`), `activo` (`true`|`false`), `search`, `page`, `limit`.
 
@@ -361,13 +361,13 @@ Respuesta `200`:
 
 ---
 
-#### `GET /api/usuarios/:id` 🔒
+#### `GET /api/usuarios/:id` 
 
 Respuesta `200`: `{ "success": true, "data": { Usuario } }`
 
 ---
 
-#### `POST /api/usuarios` 🔒 (ADMIN o EMPLEADO)
+#### `POST /api/usuarios`  (ADMIN o EMPLEADO)
 
 Body:
 
@@ -388,7 +388,7 @@ Respuesta `201`: `{ "success": true, "data": { Usuario } }`
 
 ---
 
-#### `PUT /api/usuarios/:id` 🔒 ⚡
+#### `PUT /api/usuarios/:id` 
 
 Body (todos los campos opcionales):
 
@@ -406,7 +406,7 @@ Respuesta `200`: `{ "success": true, "data": { Usuario } }`
 
 ---
 
-#### `DELETE /api/usuarios/:id` 🔒 ⚡
+#### `DELETE /api/usuarios/:id` 
 
 Respuesta `200`: `{ "success": true, "data": { Usuario } }`
 
@@ -414,7 +414,7 @@ Respuesta `200`: `{ "success": true, "data": { Usuario } }`
 
 ### Empleados
 
-#### `GET /api/empleados` 🔒
+#### `GET /api/empleados` 
 
 Query params: `search`, `page`, `limit`, `sort`, `order`.
 
@@ -440,13 +440,13 @@ Respuesta `200`:
 
 ---
 
-#### `GET /api/empleados/:id` 🔒
+#### `GET /api/empleados/:id` 
 
 Respuesta `200`: `{ "success": true, "data": { Empleado } }`
 
 ---
 
-#### `POST /api/empleados` 🔒 ⚡
+#### `POST /api/empleados` 
 
 Body:
 
@@ -462,7 +462,7 @@ Respuesta `201`: `{ "success": true, "data": { Empleado } }`
 
 ---
 
-#### `PUT /api/empleados/:id` 🔒 ⚡
+#### `PUT /api/empleados/:id` 
 
 Body (todos los campos opcionales):
 
@@ -478,7 +478,7 @@ Respuesta `200`: `{ "success": true, "data": { Empleado } }`
 
 ---
 
-#### `DELETE /api/empleados/:id` 🔒 ⚡
+#### `DELETE /api/empleados/:id` 
 
 Respuesta `200`: `{ "success": true, "data": { Empleado } }`
 
@@ -486,7 +486,7 @@ Respuesta `200`: `{ "success": true, "data": { Empleado } }`
 
 ### Categorías
 
-#### `GET /api/categorias` 🔒
+#### `GET /api/categorias` 
 
 Query params: `search`, `page`, `limit`.
 
@@ -511,13 +511,13 @@ Respuesta `200`:
 
 ---
 
-#### `GET /api/categorias/:id` 🔒
+#### `GET /api/categorias/:id` 
 
 Respuesta `200`: `{ "success": true, "data": { Categoria } }`
 
 ---
 
-#### `POST /api/categorias` 🔒 (ADMIN o EMPLEADO)
+#### `POST /api/categorias`  (ADMIN o EMPLEADO)
 
 Body:
 
@@ -534,7 +534,7 @@ Respuesta `201`: `{ "success": true, "data": { Categoria } }`
 
 ---
 
-#### `PUT /api/categorias/:id` 🔒 ⚡
+#### `PUT /api/categorias/:id` 
 
 Body (todos los campos opcionales):
 
@@ -549,7 +549,7 @@ Respuesta `200`: `{ "success": true, "data": { Categoria } }`
 
 ---
 
-#### `DELETE /api/categorias/:id` 🔒 ⚡
+#### `DELETE /api/categorias/:id` 
 
 Respuesta `200`: `{ "success": true, "data": { Categoria } }`
 
@@ -557,7 +557,7 @@ Respuesta `200`: `{ "success": true, "data": { Categoria } }`
 
 ### Proveedores
 
-#### `GET /api/proveedores` 🔒
+#### `GET /api/proveedores` 
 
 Query params: `search`, `page`, `limit`.
 
@@ -582,13 +582,13 @@ Respuesta `200`:
 
 ---
 
-#### `GET /api/proveedores/:id` 🔒
+#### `GET /api/proveedores/:id` 
 
 Respuesta `200`: `{ "success": true, "data": { Proveedor } }`
 
 ---
 
-#### `POST /api/proveedores` 🔒 (ADMIN o EMPLEADO)
+#### `POST /api/proveedores` (ADMIN o EMPLEADO)
 
 Body:
 
@@ -605,7 +605,7 @@ Respuesta `201`: `{ "success": true, "data": { Proveedor } }`
 
 ---
 
-#### `PUT /api/proveedores/:id` 🔒 ⚡
+#### `PUT /api/proveedores/:id` 
 
 Body (todos los campos opcionales):
 
@@ -620,7 +620,7 @@ Respuesta `200`: `{ "success": true, "data": { Proveedor } }`
 
 ---
 
-#### `DELETE /api/proveedores/:id` 🔒 ⚡
+#### `DELETE /api/proveedores/:id` 
 
 Respuesta `200`: `{ "success": true, "data": { Proveedor } }`
 
@@ -628,7 +628,7 @@ Respuesta `200`: `{ "success": true, "data": { Proveedor } }`
 
 ### Productos
 
-#### `GET /api/productos` 🔒
+#### `GET /api/productos` 
 
 Query params:
 
@@ -673,13 +673,13 @@ Respuesta `200`:
 
 ---
 
-#### `GET /api/productos/:id` 🔒
+#### `GET /api/productos/:id` 
 
 Respuesta `200`: `{ "success": true, "data": { Producto } }`
 
 ---
 
-#### `POST /api/productos` 🔒 (ADMIN o EMPLEADO)
+#### `POST /api/productos` (ADMIN o EMPLEADO)
 
 Body:
 
@@ -702,7 +702,7 @@ Respuesta `201`: `{ "success": true, "data": { Producto } }`
 
 ---
 
-#### `PUT /api/productos/:id` 🔒 ⚡
+#### `PUT /api/productos/:id` 
 
 Body (todos los campos opcionales):
 
@@ -722,7 +722,7 @@ Respuesta `200`: `{ "success": true, "data": { Producto } }`
 
 ---
 
-#### `DELETE /api/productos/:id` 🔒 ⚡
+#### `DELETE /api/productos/:id` 
 
 Respuesta `200`: `{ "success": true, "data": { Producto } }`
 
@@ -730,7 +730,7 @@ Respuesta `200`: `{ "success": true, "data": { Producto } }`
 
 ### Sucursales
 
-#### `GET /api/sucursales` 🔒
+#### `GET /api/sucursales` 
 
 Query params: `search`, `id_distrito` (UUID), `activa` (`true`|`false`), `page`, `limit`.
 
@@ -757,13 +757,13 @@ Respuesta `200`:
 
 ---
 
-#### `GET /api/sucursales/:id` 🔒
+#### `GET /api/sucursales/:id` 
 
 Respuesta `200`: `{ "success": true, "data": { Sucursal } }`
 
 ---
 
-#### `POST /api/sucursales` 🔒 ⚡
+#### `POST /api/sucursales` 
 
 Body:
 
@@ -782,7 +782,7 @@ Respuesta `201`: `{ "success": true, "data": { Sucursal } }`
 
 ---
 
-#### `PUT /api/sucursales/:id` 🔒 ⚡
+#### `PUT /api/sucursales/:id` 
 
 Body (todos los campos opcionales):
 
@@ -799,7 +799,7 @@ Respuesta `200`: `{ "success": true, "data": { Sucursal } }`
 
 ---
 
-#### `DELETE /api/sucursales/:id` 🔒 ⚡
+#### `DELETE /api/sucursales/:id` 
 
 Respuesta `200`: `{ "success": true, "data": { Sucursal } }`
 
@@ -807,7 +807,7 @@ Respuesta `200`: `{ "success": true, "data": { Sucursal } }`
 
 ### Stock (Inventario por sucursal)
 
-#### `GET /api/stocks` 🔒
+#### `GET /api/stocks` 
 
 Query params:
 
@@ -841,7 +841,7 @@ Respuesta `200`:
 
 ---
 
-#### `GET /api/stocks/bajo` 🔒
+#### `GET /api/stocks/bajo` 
 
 Query params: `limite` (default `5`). Retorna productos con cantidad ≤ límite.
 
@@ -849,13 +849,13 @@ Respuesta `200`: `{ "success": true, "data": [ ... ] }`
 
 ---
 
-#### `GET /api/stocks/:id_producto/:id_sucursal` 🔒
+#### `GET /api/stocks/:id_producto/:id_sucursal` 
 
 Respuesta `200`: `{ "success": true, "data": { Stock } }`
 
 ---
 
-#### `POST /api/stocks` 🔒 (ADMIN o EMPLEADO)
+#### `POST /api/stocks` (ADMIN o EMPLEADO)
 
 **Upsert**: si el par producto/sucursal ya existe, actualiza la cantidad; si no, lo crea.
 
@@ -873,7 +873,7 @@ Body:
 
 ---
 
-#### `PUT /api/stocks/:id_producto/:id_sucursal` 🔒 ⚡
+#### `PUT /api/stocks/:id_producto/:id_sucursal` 
 
 Body:
 
@@ -885,7 +885,7 @@ Respuesta `200`: `{ "success": true, "data": { Stock } }`
 
 ---
 
-#### `DELETE /api/stocks/:id_producto/:id_sucursal` 🔒 ⚡
+#### `DELETE /api/stocks/:id_producto/:id_sucursal` 
 
 Respuesta `200`: `{ "success": true, "data": { Stock } }`
 
@@ -896,7 +896,7 @@ Respuesta `200`: `{ "success": true, "data": { Stock } }`
 **Solo el endpoint de creación (`POST /api/ventas`) acepta cabecera + detalles juntos.**
 Para crear una venta **siempre** usa este endpoint.
 
-#### `GET /api/ventas` 🔒
+#### `GET /api/ventas` 
 
 Query params:
 
@@ -945,7 +945,7 @@ Respuesta `200`:
 
 ---
 
-#### `GET /api/ventas/:id` 🔒
+#### `GET /api/ventas/:id` 
 
 Incluye los `detalles` de la venta.
 
@@ -988,7 +988,7 @@ Respuesta `200`:
 
 ---
 
-#### `POST /api/ventas` 🔒 (ADMIN o EMPLEADO)
+#### `POST /api/ventas`  (ADMIN o EMPLEADO)
 
 Crea venta + detalles + descuenta stock **en una sola transacción**.
 
@@ -1059,7 +1059,7 @@ Respuesta `201`:
 
 ---
 
-#### `PUT /api/ventas/:id` 🔒 ⚡
+#### `PUT /api/ventas/:id` 
 
 **Solo actualiza cabecera** (campos DTE y transaccionales). No modifica detalles.
 
@@ -1082,7 +1082,7 @@ Respuesta `200`: `{ "success": true, "data": { Venta } }`
 
 ---
 
-#### `PUT /api/ventas/:id/anular` 🔒 ⚡
+#### `PUT /api/ventas/:id/anular` 
 
 Anula la venta y **restaura el stock**. No requiere body.
 
@@ -1094,7 +1094,7 @@ Respuesta `200`: `{ "success": true, "data": { Venta } }`
 
 Estas rutas permiten manejar detalles individualmente si se necesita, pero lo normal es usar `POST /api/ventas` para crear todo junto.
 
-#### `POST /api/ventas/:idVenta/detalles` 🔒
+#### `POST /api/ventas/:idVenta/detalles` 
 
 Body:
 
@@ -1111,7 +1111,7 @@ Body:
 
 ---
 
-#### `PUT /api/ventas/:idVenta/detalles/:id` 🔒
+#### `PUT /api/ventas/:idVenta/detalles/:id` 
 
 Body (todos los campos opcionales):
 
@@ -1125,7 +1125,7 @@ Body (todos los campos opcionales):
 
 ---
 
-#### `DELETE /api/ventas/:idVenta/detalles/:id` 🔒
+#### `DELETE /api/ventas/:idVenta/detalles/:id` 
 
 Respuesta `200`: `{ "success": true, "data": { VentaDetalle } }`
 
@@ -1135,7 +1135,7 @@ Respuesta `200`: `{ "success": true, "data": { VentaDetalle } }`
 
 **Mismo patrón que ventas**: usa `POST /api/compras` para crear cabecera + detalles juntos.
 
-#### `GET /api/compras` 🔒
+#### `GET /api/compras` 
 
 Query params:
 
@@ -1174,7 +1174,7 @@ Respuesta `200`:
 
 ---
 
-#### `GET /api/compras/:id` 🔒
+#### `GET /api/compras/:id` 
 
 Incluye los `detalles`.
 
@@ -1207,7 +1207,7 @@ Respuesta `200`:
 
 ---
 
-#### `POST /api/compras` 🔒 (ADMIN o EMPLEADO)
+#### `POST /api/compras`  (ADMIN o EMPLEADO)
 
 Crea compra + detalles en **una sola transacción**. **No incrementa el stock** (debe hacerse manualmente al recibir la mercancía).
 
@@ -1257,7 +1257,7 @@ Respuesta `201`:
 
 ---
 
-#### `PUT /api/compras/:id` 🔒 ⚡
+#### `PUT /api/compras/:id` 
 
 Body (todos los campos opcionales):
 
@@ -1274,7 +1274,7 @@ Respuesta `200`: `{ "success": true, "data": { Compra } }`
 
 ---
 
-#### `PUT /api/compras/:id/cancelar` 🔒 ⚡
+#### `PUT /api/compras/:id/cancelar` 
 
 Cancela la compra. No requiere body.
 
@@ -1284,7 +1284,7 @@ Respuesta `200`: `{ "success": true, "data": { Compra } }`
 
 ### Compra Detalles
 
-#### `POST /api/compras/:idCompra/detalles` 🔒
+#### `POST /api/compras/:idCompra/detalles` 
 
 Body:
 
@@ -1299,7 +1299,7 @@ Body:
 
 ---
 
-#### `PUT /api/compras/:idCompra/detalles/:id` 🔒
+#### `PUT /api/compras/:idCompra/detalles/:id` 
 
 Body (todos los campos opcionales):
 
@@ -1312,7 +1312,7 @@ Body (todos los campos opcionales):
 
 ---
 
-#### `DELETE /api/compras/:idCompra/detalles/:id` 🔒
+#### `DELETE /api/compras/:idCompra/detalles/:id` 
 
 Respuesta `200`: `{ "success": true, "data": { CompraDetalle } }`
 
@@ -1322,7 +1322,7 @@ Respuesta `200`: `{ "success": true, "data": { CompraDetalle } }`
 
 **Solo ADMIN.**
 
-#### `GET /api/bitacora` 🔒 ⚡
+#### `GET /api/bitacora` 
 
 Query params: `accion` (`CREATE`|`UPDATE`|`DELETE`), `entidad` (`Usuario`|`Empleado`|`Producto`|`Categoria`|`Proveedor`|`Sucursal`|`Stock`|`Venta`|`VentaDetalle`|`Compra`|`CompraDetalle`), `page`, `limit`.
 
