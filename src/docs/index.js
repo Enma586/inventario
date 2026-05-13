@@ -9,3 +9,4 @@ import './ventas.docs.js';
 import './sucursales.docs.js';
 import './compras.docs.js';
 import './bitacora.docs.js';
+import './usuarios.docs.js';

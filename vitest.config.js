@@ -6,9 +6,10 @@ export default defineConfig({
     environment: 'node',
     setupFiles: ['./src/tests/setup.js'],
     testTimeout: 15000,
+    fileParallelism: false,   // ← secuencial forzado
     pool: 'forks',
     forks: {
-      singleFork: true,   // ← vitest 4: top-level, no dentro de poolOptions
+      singleFork: true,
     },
   },
 });
