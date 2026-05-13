@@ -250,3 +250,66 @@ registry.registerPath({
     }
   }
 });
+registry.registerPath({
+  method: 'post',
+  path: '/api/auth/logout',
+  tags: ['Autenticación'],
+  summary: 'Cerrar sesión (elimina la cookie httpOnly)',
+  security: [{ cookieAuth: [] }],
+  responses: {
+    200: {
+      description: 'Sesión cerrada exitosamente',
+    }
+  }
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/api/auth/me',
+  tags: ['Autenticación'],
+  summary: 'Obtener los datos del usuario autenticado actual',
+  security: [{ cookieAuth: [] }],
+  responses: {
+    200: {
+      description: 'Datos del usuario obtenidos exitosamente',
+    },
+    401: {
+      description: 'No autorizado - Token faltante o inválido',
+    }
+  }
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/api/auth/verify',
+  tags: ['Autenticación'],
+  summary: 'Verificar la validez del token actual',
+  security: [{ cookieAuth: [] }],
+  responses: {
+    200: {
+      description: 'Token válido',
+    },
+    401: {
+      description: 'No autorizado - Token faltante o inválido',
+    }
+  }
+});
+
+registry.registerPath({
+  method: 'get',
+  path: '/api/auth/renew',
+  tags: ['Autenticación'],
+  summary: 'Renovar el token de sesión y refrescar la cookie',
+  security: [{ cookieAuth: [] }],
+  responses: {
+    200: {
+      description: 'Token renovado exitosamente',
+    },
+    401: {
+      description: 'No autorizado - Token faltante o inválido',
+    },
+    404: {
+      description: 'Usuario no encontrado o inactivo',
+    }
+  }
+});
