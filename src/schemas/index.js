@@ -6,8 +6,8 @@
  */
 
 // ─── Helpers compartidos ─────────────────────────────────────────
-export { paginationFields, paginationSchema } from './pagination.fields.js';
-export { paramsIdSchema } from './params.js';
+export { paginationFields, paginationSchema } from "./pagination.fields.js";
+export { paramsIdSchema } from "./params.js";
 
 // ─── Usuarios ────────────────────────────────────────────────────
 export {
@@ -19,8 +19,8 @@ export {
   updateEmpleadoSchema,
   queryEmpleadoSchema,
   registerSchema,
-  registerUsuarioSchema
-} from './usuarios/index.js';
+  registerUsuarioSchema,
+} from "./usuarios/index.js";
 
 // ─── Productos ───────────────────────────────────────────────────
 export {
@@ -33,7 +33,7 @@ export {
   createProductoSchema,
   updateProductoSchema,
   queryProductoSchema,
-} from './productos/index.js';
+} from "./productos/index.js";
 
 // ─── Sucursal ────────────────────────────────────────────────────
 export {
@@ -44,7 +44,7 @@ export {
   updateStockSchema,
   stockParamsSchema,
   queryStockSchema,
-} from './sucursal/index.js';
+} from "./sucursal/index.js";
 
 // ─── Ventas ──────────────────────────────────────────────────────
 export {
@@ -54,8 +54,8 @@ export {
   createVentaDetalleSchema,
   createVentaDetalleBulkSchema,
   updateVentaDetalleSchema,
-  createVentaCompletaSchema
-} from './ventas/index.js';
+  createVentaCompletaSchema,
+} from "./ventas/index.js";
 
 // ─── Compras ─────────────────────────────────────────────────────
 export {
@@ -65,5 +65,7 @@ export {
   createCompraDetalleSchema,
   createCompraDetalleBulkSchema,
   updateCompraDetalleSchema,
-  createCompraCompletaSchema
-} from './compras/index.js';
+  createCompraCompletaSchema,
+} from "./compras/index.js";
+
+export { queryBitacoraSchema } from "./bitacora/index.js";
