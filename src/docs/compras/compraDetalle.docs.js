@@ -30,19 +30,7 @@ registry.registerPath({
   }
 });
 
-registry.registerPath({
-  method: 'get',
-  path: '/api/compras/{id_compra}/detalles',
-  tags: ['Compras - Detalles'],
-  summary: 'Obtener todos los detalles asociados a una compra',
-  security: [{ cookieAuth: [] }],
-  request: {
-    params: z.object({ id_compra: z.string().uuid() })
-  },
-  responses: {
-    200: { description: 'Lista de detalles de la compra' }
-  }
-});
+
 
 registry.registerPath({
   method: 'put',

@@ -43,7 +43,21 @@ registry.registerPath({
     200: { description: 'Lista de usuarios obtenida exitosamente' }
   }
 });
-
+registry.registerPath({
+  method: 'get',
+  path: '/api/usuarios/{id}',
+  tags: ['Usuarios'],
+  summary: 'Obtener un usuario por su ID',
+  security: [{ cookieAuth: [] }],
+  request: {
+    params: z.object({ id: z.string().uuid() })
+  },
+  responses: {
+    200: { description: 'Usuario encontrado' },
+    400: { description: 'UUID inválido' },
+    404: { description: 'Usuario no encontrado' }
+  }
+});
 registry.registerPath({
   method: 'put',
   path: '/api/usuarios/{id}',
@@ -61,6 +75,20 @@ registry.registerPath({
   responses: {
     200: { description: 'Usuario actualizado exitosamente' },
     400: { description: 'Errores de validación o UUID inválido' },
+    404: { description: 'Usuario no encontrado' }
+  }
+});
+registry.registerPath({
+  method: 'delete',
+  path: '/api/usuarios/{id}',
+  tags: ['Usuarios'],
+  summary: 'Eliminar un usuario del sistema',
+  security: [{ cookieAuth: [] }],
+  request: {
+    params: z.object({ id: z.string().uuid() })
+  },
+  responses: {
+    200: { description: 'Usuario eliminado exitosamente' },
     404: { description: 'Usuario no encontrado' }
   }
 });

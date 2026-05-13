@@ -80,3 +80,18 @@ registry.registerPath({
     404: { description: 'Sucursal no encontrada' }
   }
 });
+registry.registerPath({
+  method: 'get',
+  path: '/api/sucursales/{id}',
+  tags: ['Sucursales'],
+  summary: 'Obtener una sucursal por su ID',
+  security: [{ cookieAuth: [] }],
+  request: {
+    params: z.object({ id: z.string().uuid() })
+  },
+  responses: {
+    200: { description: 'Sucursal encontrada' },
+    400: { description: 'UUID inválido' },
+    404: { description: 'Sucursal no encontrada' }
+  }
+});

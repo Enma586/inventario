@@ -46,3 +46,28 @@ registry.registerPath({
   request: { params: paramsIdSchema },
   responses: { 200: { description: 'Venta anulada.' } }
 });
+registry.registerPath({
+  method: 'get',
+  path: '/api/ventas/{id}',
+  tags: VENTAS_TAG,
+  summary: 'Obtener una venta por su ID',
+  security: [{ cookieAuth: [] }],
+  request: { params: paramsIdSchema },
+  responses: {
+    200: { description: 'Venta encontrada.' },
+    404: { description: 'Venta no encontrada.' }
+  }
+});
+registry.registerPath({
+  method: 'put',
+  path: '/api/ventas/{id}',
+  tags: VENTAS_TAG,
+  summary: 'Actualizar datos de una venta',
+  description: 'Solo ADMIN. Genera log de auditoría.',
+  security: [{ cookieAuth: [] }],
+  request: {
+    params: paramsIdSchema,
+    body: { content: { 'application/json': { schema: updateVentaSchema } } }
+  },
+  responses: { 200: { description: 'Venta actualizada correctamente.' } }
+});

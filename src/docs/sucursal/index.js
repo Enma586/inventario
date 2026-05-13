@@ -1,2 +1,2 @@
-import './usuarios.docs.js';
-import './empleados.docs.js';
+import './sucursales.docs.js';
+import './stock.docs.js';

@@ -9,7 +9,7 @@ import {
   createProveedorSchema,
   updateProveedorSchema,
   queryProveedorSchema
-} from '../schemas/proveedor/proveedor.schema.js';
+} from '../../schemas/productos/proveedor.schema.js';
 
 registry.registerPath({
   method: 'post',
@@ -77,6 +77,21 @@ registry.registerPath({
   },
   responses: {
     200: { description: 'Proveedor eliminado exitosamente' },
+    404: { description: 'Proveedor no encontrado' }
+  }
+});
+registry.registerPath({
+  method: 'get',
+  path: '/api/proveedores/{id}',
+  tags: ['Proveedores'],
+  summary: 'Obtener un proveedor por su ID',
+  security: [{ cookieAuth: [] }],
+  request: {
+    params: z.object({ id: z.string().uuid() })
+  },
+  responses: {
+    200: { description: 'Proveedor encontrado' },
+    400: { description: 'UUID inválido' },
     404: { description: 'Proveedor no encontrado' }
   }
 });

@@ -80,3 +80,18 @@ registry.registerPath({
     404: { description: 'Producto no encontrado' }
   }
 });
+registry.registerPath({
+  method: 'get',
+  path: '/api/productos/{id}',
+  tags: ['Productos'],
+  summary: 'Obtener un producto por su ID',
+  security: [{ cookieAuth: [] }],
+  request: {
+    params: z.object({ id: z.string().uuid() })
+  },
+  responses: {
+    200: { description: 'Producto encontrado' },
+    400: { description: 'UUID inválido' },
+    404: { description: 'Producto no encontrado' }
+  }
+});

@@ -1,1 +1,1 @@
-export { default } from './bitacora.docs.js';
+import  './bitacora.docs.js';

@@ -96,3 +96,18 @@ registry.registerPath({
     404: { description: 'Registro no encontrado' }
   }
 });
+registry.registerPath({
+  method: 'get',
+  path: '/api/stocks/{id_producto}/{id_sucursal}',
+  tags: ['Inventario (Stocks)'],
+  summary: 'Obtener el stock de un producto específico en una sucursal',
+  security: [{ cookieAuth: [] }],
+  request: {
+    params: stockParamsSchema
+  },
+  responses: {
+    200: { description: 'Registro de stock encontrado' },
+    400: { description: 'Parámetros inválidos' },
+    404: { description: 'Registro no encontrado' }
+  }
+});

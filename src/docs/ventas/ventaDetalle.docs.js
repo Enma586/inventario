@@ -12,15 +12,7 @@ import {
 
 const DETALLES_TAG = ['Ventas - Detalles'];
 
-registry.registerPath({
-  method: 'get',
-  path: '/api/ventas/{id_venta}/detalles',
-  tags: DETALLES_TAG,
-  summary: 'Listar productos de una factura específica',
-  security: [{ cookieAuth: [] }],
-  request: { params: z.object({ id_venta: z.string().uuid() }) },
-  responses: { 200: { description: 'Lista de detalles obtenida.' } }
-});
+
 
 registry.registerPath({
   method: 'post',
@@ -46,4 +38,15 @@ registry.registerPath({
     body: { content: { 'application/json': { schema: updateVentaDetalleSchema } } }
   },
   responses: { 200: { description: 'Detalle actualizado.' } }
+});
+registry.registerPath({
+  method: 'delete',
+  path: '/api/ventas/detalles/{id}',
+  tags: DETALLES_TAG,
+  summary: 'Eliminar una línea de detalle de una venta',
+  security: [{ cookieAuth: [] }],
+  request: {
+    params: z.object({ id: z.string().uuid() })
+  },
+  responses: { 200: { description: 'Detalle eliminado exitosamente.' } }
 });
