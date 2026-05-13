@@ -4,13 +4,13 @@
  */
 
 import { z } from 'zod';
-import { registry } from '../config/swagger.js';
+import { registry } from '../../config/swagger.js';
 import {
   createCompraCompletaSchema,
   updateCompraSchema,
   queryCompraSchema,
-} from '../schemas/compras/compra.schema.js';
-import { paramsIdSchema } from '../schemas/index.js'; // Asumiendo que paramsIdSchema está en el index
+} from '../../schemas/compras/compra.schema.js';
+import { paramsIdSchema } from '../../schemas/index.js'; // Asumiendo que paramsIdSchema está en el index
 
 const COMPRAS_TAG = ['Compras'];
 

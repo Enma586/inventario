@@ -4,12 +4,12 @@
  */
 
 import { z } from 'zod';
-import { registry } from '../config/swagger.js';
+import { registry } from '../../config/swagger.js';
 import {
   createSucursalSchema,
   updateSucursalSchema,
   querySucursalSchema
-} from '../schemas/sucursal/sucursal.schema.js';
+} from '../../schemas/sucursal/sucursal.schema.js';
 
 registry.registerPath({
   method: 'post',

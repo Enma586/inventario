@@ -1,12 +1,12 @@
 /**
  * @file src/docs/index.js
- * @description Punto de entrada para centralizar la documentación modular.
+ * @description Punto de entrada para centralizar la documentación modular de Swagger.
  */
 
 import './auth.docs.js';
-import './productos.docs.js';
-import './ventas.docs.js';
-import './sucursales.docs.js';
-import './compras.docs.js';
-import './bitacora.docs.js';
-import './usuarios.docs.js';
+import './bitacora/index.js';
+import './compras/index.js';
+import './productos/index.js';
+import './sucursal/index.js';
+import './usuarios/index.js';
+import './ventas/index.js';

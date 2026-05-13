@@ -4,13 +4,13 @@
  */
 
 import { z } from 'zod';
-import { registry } from '../config/swagger.js';
+import { registry } from '../../config/swagger.js';
 import {
   createVentaCompletaSchema,
   updateVentaSchema,
   queryVentaSchema,
-} from '../schemas/ventas/venta.schema.js';
-import { paramsIdSchema } from '../schemas/index.js';
+} from '../../schemas/ventas/venta.schema.js';
+import { paramsIdSchema } from '../../schemas/index.js';
 
 const VENTAS_TAG = ['Ventas'];
 

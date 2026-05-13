@@ -4,11 +4,11 @@
  */
 
 import { z } from 'zod';
-import { registry } from '../config/swagger.js';
+import { registry } from '../../config/swagger.js';
 import {
   createVentaDetalleSchema,
   updateVentaDetalleSchema
-} from '../schemas/ventas/ventaDetalle.schema.js';
+} from '../../schemas/ventas/ventaDetalle.schema.js';
 
 const DETALLES_TAG = ['Ventas - Detalles'];
 

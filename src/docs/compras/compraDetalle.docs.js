@@ -4,11 +4,11 @@
  */
 
 import { z } from 'zod';
-import { registry } from '../config/swagger.js';
+import { registry } from '../../config/swagger.js';
 import {
   createCompraDetalleSchema,
   updateCompraDetalleSchema
-} from '../schemas/compras/compraDetalle.schema.js';
+} from '../../schemas/compras/compraDetalle.schema.js';
 
 registry.registerPath({
   method: 'post',

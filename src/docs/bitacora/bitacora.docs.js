@@ -3,8 +3,8 @@
  * @description Documentación de endpoints para el sistema de auditoría (Bitácora).
  */
 
-import { registry } from '../config/swagger.js';
-import { queryBitacoraSchema } from '../schemas/bitacora/bitacora.schema.js';
+import { registry } from '../../config/swagger.js';
+import { queryBitacoraSchema } from '../../schemas/bitacora/bitacora.schema.js';
 
 registry.registerPath({
   method: 'get',

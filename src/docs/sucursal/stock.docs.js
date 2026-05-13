@@ -4,13 +4,13 @@
  */
 
 import { z } from 'zod';
-import { registry } from '../config/swagger.js';
+import { registry } from '../../config/swagger.js';
 import {
   createStockSchema,
   updateStockSchema,
   stockParamsSchema,
   queryStockSchema
-} from '../schemas/sucursal/stock.schema.js';
+} from '../../schemas/sucursal/stock.schema.js';
 
 registry.registerPath({
   method: 'post',

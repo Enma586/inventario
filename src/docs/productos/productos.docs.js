@@ -4,12 +4,12 @@
  */
 
 import { z } from 'zod';
-import { registry } from '../config/swagger.js';
+import { registry } from '../../config/swagger.js';
 import {
   createProductoSchema,
   updateProductoSchema,
   queryProductoSchema
-} from '../schemas/productos/producto.schema.js';
+} from '../../schemas/productos/producto.schema.js';
 
 registry.registerPath({
   method: 'post',

@@ -4,12 +4,12 @@
  */
 
 import { z } from 'zod';
-import { registry } from '../config/swagger.js';
+import { registry } from '../../config/swagger.js';
 import { 
   createUsuarioSchema, 
   queryUsuarioSchema, 
   updateUsuarioSchema 
-} from '../schemas/usuarios/usuario.schema.js';
+} from '../../schemas/usuarios/usuario.schema.js';
 
 registry.registerPath({
   method: 'post',

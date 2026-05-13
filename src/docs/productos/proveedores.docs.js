@@ -4,7 +4,7 @@
  */
 
 import { z } from 'zod';
-import { registry } from '../config/swagger.js';
+import { registry } from '../../config/swagger.js';
 import {
   createProveedorSchema,
   updateProveedorSchema,
